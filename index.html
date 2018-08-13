@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Datenstrukturen visualisieren</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/serif.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- script src="js/d3.v4.min.js"></script -->
+		<script src="node_modules/viz.js/viz.js"></script>
+		<script src="node_modules/viz.js/full.render.js"></script>
+		<!-- script src="js/d3-graphviz.min.js"></script -->
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+
+			var viz = new Viz();
+			function renderDot(target, source) {
+				viz.renderSVGElement(source)
+			  	.then(function(element) {
+						document.getElementById(target).innerHTML = "";
+				    document.getElementById(target).appendChild(element);
+				  })
+				  .catch(error => {
+				    viz = new Viz();
+				    console.error(error);
+				  });
+			};
+		</script>
+		<style>
+			div.graph {
+				padding: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<section>
+					<div id="intro" class="graph"></div>
+					<span>Datenstrukturen visualisieren mit der DOT Sprache</span>
+					<script>
+					renderDot('intro',`
+						digraph {
+						    rankdir=LR;
+						    Ein [style=filled,fillcolor=lightblue];
+						    Bild [style=filled,fillcolor=lightgrey];
+						    Ein -> Bild;
+						    Bild -> sagt;
+						    sagt -> mehr;
+						    mehr -> als;
+						    tausend [style=filled,fillcolor=lightyellow];
+						    Worte [style=filled,fillcolor=green];
+						    als -> tausend;
+						    tausend -> Worte;
+						    {rank=same; Ein Bild sagt}
+						    {rank=same; mehr als tausend}
+						    {rank=same; Worte}
+						}
+						`);
+					</script>
+				</section>
+
+
+				<section>
+					<section>
+						<h2>Warum DOT?</h2>
+					</section>
+					<section>
+						<h3>Low-tech</h3>
+						<span>textuelle Beschreibung eines Graphen</span>
+					</section>
+					<section>
+						<h3>Universell einsetzbar</h3>
+						<span>z.B. in Logdateien, Datenbank, Web</span>
+					</section>
+					<section>
+						<h3>Praxiserprobt und hype-free</h3>
+						<span>Entwickelt 1999 von AT&T Labs</h3>
+					</section>
+					<section>
+						<h3>Vielfältige Anwendungsszenarien</h3>
+						<span>Graphen, Bäume, Netzwerk oder andere strukturierte Daten</span>
+					</section>
+				</section>
+
+
+				<section>
+					<section>
+						<span>Datenstrukturen und andere <span class="fragment highlight-blue">strukturierte Informationen</span> können als <span class="fragment highlight-green">Graphen</span> dargestellt werden.</span>
+					</section>
+					<section>
+						<span>Als Graphen bezeichnet man eine Menge von <span class="fragment highlight-blue" id="knoten">Knoten</span> und <span class="fragment highlight-green" id="kanten">Kanten</span>.</span>
+						<div id="simple" class="graph"><script>renderDot('simple','graph { rankdir=LR; node [style="filled"]; a -- b;}');</script></div>
+					</section>
+					<section>
+						<span>Es gibt ungerichtete Graphen</span>
+						<div id="ungerichtet" class="graph"><script>renderDot('ungerichtet', 'graph { rankdir=LR; a -- b;}');</script></div>
+					</section>
+					<section>
+						<span>und gerichtete Graphen</span>
+						<div id="gerichtet" class="graph"><script>renderDot('gerichtet', 'digraph { rankdir=LR; a -> b;}');</script></div>
+					</section>
+					<section>
+						<span>Ein paar Beispiele</span>
+					</section>
+				</section>
+
+
+				<section>
+					<textarea id="dotsource1" onkeyup="renderDot('dotgraph1', this.value);"></textarea>
+					<div id="dotgraph1" style="float: right;" class="graph"></div>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+
+			Reveal.addEventListener( 'fragmentshown', function( event ) {
+				if(event.fragment.id === 'knoten') {
+					renderDot('simple',`
+						graph {
+							rankdir=LR;
+							node [style="filled"];
+							a [fillcolor="cyan"]
+							a -- b;
+						}
+						`);
+				}
+				else if(event.fragment.id === 'kanten') {
+					renderDot('simple',`
+						graph {
+							rankdir=LR;
+							node [style="filled"];
+							a [fillcolor="cyan"]
+							a -- b [color=green,penwidth=3.0];
+						}
+						`);
+				}
+			});
+
+			Reveal.addEventListener( 'fragmenthidden', function( event ) {
+				if(event.fragment.id === 'knoten' || event.fragment.id === 'kanten') {
+					renderDot('simple',`
+						graph {
+							rankdir=LR;
+							node [style="filled"];
+							a -- b;
+						}
+						`);
+				}
+			});
+		</script>
+	</body>
+</html>

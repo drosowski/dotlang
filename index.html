@@ -203,7 +203,7 @@
 						<div id="ebaum" class="graph large">
 							<script>renderDot('ebaum', `
 								graph {
-								  node [shape=box];
+								  node [shape=box,style=filled];
 								  splines=true;
 
 								  r [label="Tier, Pflanze, Mineral\n oder etwas anderes?"];
@@ -232,19 +232,82 @@
 						</div>
 					</section>
 					<section>
+						<h3>Hashbaum (Merkle Tree)</h3>
+						<div id="hbaum" class="graph large">
+							<script>renderDot('hbaum', `
+							digraph {
+							  node [shape=box, style=filled, fillcolor=lightblue];
+
+							  r [label="ROOT [06A7]"];
+							  i [label="I [FA3C]"];
+							  j [label="J [45CF]",group=g1];
+							  r -> i;
+							  r -> j;
+
+							  f [label="F [29F0]"];
+							  g [label="G [5F6E]"];
+							  h [label="H [45CF]",group=g1];
+							  i -> f;
+							  i -> g;
+							  j -> h;
+
+							  node [shape=box, style=filled, fillcolor=green];
+							  a [label="A [110C]"];
+							  b [label="B [FF4E]"];
+							  c [label="C [A4C2]"];
+							  d [label="D [D331]"];
+							  e [label="E [45CF]",group=g1];
+
+							  f -> a;
+							  f -> b;
+							  g -> c;
+							  g -> d;
+							  h -> e;
+							}
+							`);
+							</script>
+						</div>
+						<span style="font-size: 12px;">Angelehnt an https://github.com/quux00/merkle-tree</span>
+					</section>
+					<section>
+						<h3>Maven Dependency Graph (Guava)</h3>
+						<div id="depgraph" class="graph large">
+							<script>renderDot('depgraph', `
+							digraph "com.google.guava:guava:bundle:HEAD-jre-SNAPSHOT" {
+							        "com.google.guava:guava:bundle:HEAD-jre-SNAPSHOT" -> "com.google.code.findbugs:jsr305:jar:3.0.2:compile" ;
+							        "com.google.guava:guava:bundle:HEAD-jre-SNAPSHOT" -> "org.checkerframework:checker-qual:jar:2.5.2:compile" ;
+							        "com.google.guava:guava:bundle:HEAD-jre-SNAPSHOT" -> "com.google.errorprone:error_prone_annotations:jar:2.1.3:compile" ;
+							        "com.google.guava:guava:bundle:HEAD-jre-SNAPSHOT" -> "com.google.j2objc:j2objc-annotations:jar:1.1:compile" ;
+							        "com.google.guava:guava:bundle:HEAD-jre-SNAPSHOT" -> "org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile" ;
+							        "com.google.guava:guava:bundle:HEAD-jre-SNAPSHOT" -> "jdk:srczip:jar:999:system" ;
+							 }
+					`);
+							</script>
+						</div>
+					</section>
+					<section>
 						<h3>Soziales Netzwerk</h3>
 						<div id="sozial" class="graph large">
 							<script>renderDot('sozial', `
 							graph {
-							  node [shape=box];
-							  a [label="Daniel"];
-							  b [label="Lisa"];
-							  c [label="Moritz"];
-							  d [label="Emma"];
-							  e [label="Max"];
-							  f [label="Ulrike"];
+								node [shape=box,style=filled]
+
+								subgraph {
+								  node [shape=box,style=filled,fillcolor="lightblue"];
+								  a [label="Daniel"];
+								  b [label="Lisa"];
+								  h [label="Ulrich"];
+								  c [label="Moritz"];
+								}
+
+							  subgraph {
+								  node [shape=box,style=filled,fillcolor="green"];
+								  d [label="Emma"];
+								  e [label="Max"];
+								  f [label="Ulrike"];
+							  }
+
 							  g [label="Herbert"];
-							  h [label="Ulrich"];
 							  a -- h;
 							  h -- b;
 							  h -- c;
@@ -256,6 +319,7 @@
 							  d -- f;
 							  g -- d;
 							  e -- f;
+
 							  {rank=same; a b};
 							  {rank=same; c h};
 							  {rank=same; e f};
@@ -263,6 +327,39 @@
 					`);
 						</script>
 					</div>
+				</section>
+				<section>
+					<h3>Organigramm</h3>
+					<div id="orga" class="graph large">
+						<script>renderDot('orga', `
+						digraph g{
+						ranksep=0.2;
+
+						node[shape=box3d, width=2.3, height=0.6, fontname="Arial"];
+						n1[label="Incident Commander"];
+						n2[label="Public Information\nOfficer"];
+						n3[label="Liaison Officer"];
+						n4[label="Safety Officer"];
+						n5[label="Operations Section"];
+						n6[label="Planning Section"];
+						n7[label="Logistics Section"];
+						n8[label="Finance/Admin. Section"];
+
+						node[shape=none, width=0, height=0, label=""];
+						edge[dir=none];
+						n1 -> p1 -> p2 -> p3;
+						{rank=same; n2 -> p1 -> n3;}
+						{rank=same; n4 -> p2;}
+						{rank=same; p4 -> p5 -> p3 -> p6 -> p7;}
+						p4 -> n5;
+						p5 -> n6;
+						p6 -> n7;
+						p7 -> n8;
+						}
+				`);
+						</script>
+					</div>
+					<span style="font-size: 12px;">&copy; https://stackoverflow.com/a/7374543</span>
 				</section>
 				<section>
 					<h3>Beispiel: Neuronale Netze</h3>
@@ -342,6 +439,7 @@
 						`);
 						</script>
 					</div>
+					<span style="font-size: 12px;">&copy; https://zhu45.org/posts/2017/May/25/draw-a-neural-network-through-graphviz/</span>
 				</section>
 			</section>
 

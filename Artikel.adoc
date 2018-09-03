@@ -1,0 +1,53 @@
+= Ein Bild sagt mehr als tausend Worte
+Daniel Rosowski <rosowski@smartsquare.de>
+v1.0, 31.08.2018
+
+In der IT schlummern so manche verborgenen Schätze, die auf den ersten Blick ihr Potential verbergen.
+Dazu zähle ich beispielsweise diff und patch.
+Durch ein einheitliches, textuelles Format (unidiff), findet es weite Verbreitung, auch über die Softwareentwicklungsbranche hinaus.
+Ein weiterer Kandidat sind sämtliche Markup Sprachen, seien es die älteren Vertreter wie TeX, oder auch die neueren Varianten wie z.B. asciidoc.
+Hierbei handelt es sich auch um ein textuelles Format, bei dem das Layouts eines Artikels, Buchs oder sonst einer Publikation beschrieben wird.
+Demnach macht es in den allermeisten Fällen durchaus Sinn, erst einmal zu gucken, welche Probleme bereits durch andere schlaue Menschen gelöst wurden.
+
+So auch im Fall der Visualisierung von Datenstrukturen.
+Das Thema ist wahrlich nicht neu und begleitet die IT bereits seit ihren Anfängen.
+Ende der 90er Jahre wurde von AT&T Labs eine Beschreibungssprache für Datenstrukturen entwickelt, die sich DOT nennt.
+DOT reiht sich in die oben genannten Werkzeuge ein, da es sich um ein rein textuelles Format handelt, das zudem noch sehr gut dokumentiert ist.
+Die Beschreibungen sind dadurch einfach und ohne Zuhilfenahme eines Tools zu erstellen und auch zu verarbeiten.
+Um genau zu sein, handelt es sich bei DOT um eine Beschreibungssprache für Graphen.
+Die dazugehörige Softwaresuite nennt sich Graphviz und umfasst verschiedene Engines um die, in DOT beschriebenen Graphen zu rendern.
+
+Aber eins nach dem anderen.
+Wer Graphen in DOT beschreiben möchte, sollte sich erst einmal mit den Grundlagen der Graphentheorie vertraut machen.
+Aber keine Sorge, es folgt keine seitenlange, theoretische Abhandlung.
+Tatsächlich reichen eine Handvoll grundlegende Konzepte um DOT bereits sinnvoll einsetzen zu können.
+
+== Graphentheorie
+Ein Graph besteht aus Knoten und Kanten (vgl. Abb. 1).
+Wenn ein Knoten auf einen anderen Knoten (oder auch auf sich selbst) verweist, nennt man die Verbindung zwischen den beiden Knoten eine Kante.
+Es wird zwischen ungerichteten und gerichteten Graphen unterschieden.
+Bei einem ungerichteten Graphen, ist die Richtung ohne Bedeutung. A -- B ist genau das Gleiche wie B -- A (vgl. Abb. 2).
+Anders verhält es sich bei dem gerichteten Graph. A -> B ist ein anderer Graph als B -> A, da die Richtung entscheidend ist.
+
+Ein Baum ist ein spezieller gerichteter, azyklischer Graph, der von einem Ursprungsknoten (Wurzel) ausgeht und 1 bis n Kindsknoten besitzt.
+Jeder Kindsknoten besitzt dann wiederum 1 bis n Kindsknoten usw. bis die Kindsknoten am Ende keine weiteren Knoten referenzieren.
+Diese Kindsknoten am Ende des Baums werden auch Blätter genannt (vgl. Abb. 3).
+
+Ein Netzwerk ist ein gerichteter Graph mit gewichteten Kanten.
+Anders als bei einem Baum, dürfen in einem Netzwerk Zyklen auftreten.
+Ein Zyklus ist eine kreisförmige Beziehung zwischen verschiedenen Knoten (vgl. Abb. 4).
+Wie wir *später* sehen werden, findet die unterschiedliche Gewichtung der Kanten bei dem Rendering des Graphen durch Graphviz Beachtung.
+
+== Syntax
+Damit hätten wir auch schon alles, was wir an Theorie benötigen, um unsere ersten Graphen zu beschreiben.
+Kommen wir als nächstes zur Syntax, oder zur Grammatik der DOT Sprache.
+Der dümmste anzunehmende Graph besteht aus zwei Knoten und einer verbindenden Kante und ist ungerichtet (vgl. <<listing1>>).
+
+[listing1]
+----
+graph {  <1>
+  a -- b <2>
+}
+----
+<1> Definition eines ungerichteten Graphen
+<2> Deklaration einer Kante zwischen _a_ und _b_

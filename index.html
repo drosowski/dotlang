@@ -27,8 +27,8 @@
 			document.getElementsByTagName( 'head' )[0].appendChild( link );
 
 			var viz = new Viz();
-			function renderDot(target, source, zoom = false) {
-				viz.renderSVGElement(source)
+			function renderDot(target, source, engine = 'dot', zoom = false) {
+				viz.renderSVGElement(source, {'engine': engine })
 			  	.then(function(element) {
 						document.getElementById(target).innerHTML = "";
 				    document.getElementById(target).appendChild(element);
@@ -78,7 +78,7 @@
 					<script>
 					renderDot('intro',`
 						digraph {
-						    rankdir=LR;
+						    bgcolor="#ffffff00";
 						    Ein [style=filled,fillcolor=lightblue];
 						    Bild [style=filled,fillcolor=lightgrey];
 						    Ein -> Bild;
@@ -89,12 +89,103 @@
 						    Worte [style=filled,fillcolor=green];
 						    als -> tausend;
 						    tausend -> Worte;
-						    {rank=same; Ein Bild sagt}
-						    {rank=same; mehr als tausend}
-						    {rank=same; Worte}
+						    Worte -> Bild;
 						}
-						`);
+						`, 'circo');
 					</script>
+				</section>
+
+
+				<section>
+				  <section>
+				    <h2>Wozu Visualisieren?</h2>
+				    <aside class="notes">
+				      <ul>
+					<li>"Der Benutzer ist doch eh zu dumm"</li>
+				      </ul>				      
+				    </aside>				    
+				  </section>
+				  <section>
+				    <h3>Verständnis schaffen</h3>				    
+				  </section>
+				  <section>
+				    <h3>Nachvollziehbarkeit</h3>				    
+				  </section>
+				  <section>
+				    <h3>Debugging</h3>				    
+				  </section>
+				</section>
+
+
+				<section>
+				  <section>
+				    <h2>Wie Visualisieren?</h2>
+				  </section>
+				  <section>
+				    <h3>Datenstrukturen und andere <span class="fragment highlight-blue">strukturierte Informationen</span> können als <span class="fragment highlight-green">Graphen</span> dargestellt werden.</h3>
+				  </section>
+				  <section>
+				    <h3>Manuell?</h3>
+				    <p>z.B. mit Dia, xfig, Inkscape, Skencil, ...</p>
+				    <ul style="list-style-type: none;">
+				      <li class="fragment">+ WYSIWYG</li>
+				      <li class="fragment">+ einfach zu bedienen</li>
+				      <li class="fragment">- Layout ist Handarbeit</li>
+				      <li class="fragment">- nicht skriptbar</li>
+				      <li class="fragment">- große Graphen kaum beherrschbar</li>				      
+				    </ul>				    
+				  </section>
+				  <section>
+				    <h3>Automatisch!</h3>
+				  </section>				 				  
+				</section>				
+				
+
+
+				<section>
+					<section>
+						<h2>Verborgene Schätze in der IT</h2>
+					</section>
+					<section>
+					  <h2>diff / patch</h2>
+<pre><code data-trim data-noescape>
+--- telefonliste2007.txt    2007-12-28 13:12:34.000000000 +0100
++++ telefonliste2008.txt    2008-07-28 14:16:26.000000000 +0100
+@@ -1,4 +1,5 @@
+ Mayer, Susanne, Lager, -212
+ Schmid, Carola, Geschäftsleitung, -435
+-Schmidt, Eberhard, Vertrieb, -479
+ Schmitt, Marie, Labor, -804
++Waldmann, Ernst, Labor, -805
++Zundel, Walter, Vertrieb, -476
+</code></pre>
+<span style="font-size: 12px;">&copy; Wikipedia</span>
+					</section>
+					<section>
+					  <h2>crontab</h2>
+<pre><code data-trim data-noescape>
+# Crontab Beispiel
+45 23 * * 6 /bin/prog.sh
+</code></pre>
+					</section>
+					<section>
+					  <h2>TeX, Markdown, asciidoc, etc.</h2>
+<pre><code data-trim data-noescape>				    
+\documentclass[12pt]{article}
+\usepackage{lingmacros}
+\usepackage{tree-dvips}
+\begin{document}
+
+\section*{Ein Bild sagt mehr als tausend Worte}
+</code></pre>
+					</section>
+					<section>
+						<h2>CSV</h2>
+						<p class="fragment ">Nein, wirklich, ich meine es ernst! :-)</p>
+					</section>
+					<section>
+						<h2>DOT</h2>
+					</section>
 				</section>
 
 
@@ -126,33 +217,34 @@
 						<h2>Graphen ABC</h2>
 					</section>
 					<section>
-						<h3>Datenstrukturen und andere <span class="fragment highlight-blue">strukturierte Informationen</span> können als <span class="fragment highlight-green">Graphen</span> dargestellt werden.</h3>
-					</section>
-					<section>
 						<h3>Als Graphen bezeichnet man eine Menge von <span class="fragment highlight-blue" id="knoten">Knoten</span> und <span class="fragment highlight-green" id="kanten">Kanten</span>.</h3>
 						<div id="simple" class="graph small"><script>renderDot('simple','graph { rankdir=LR; node [style="filled"]; a -- b;}');</script></div>
 					</section>
 					<section>
 						<h3>Es wird unterschieden zwischen <em>ungerichteten</em> Graphen</h3>
-						<div id="ungerichtet" class="graph small"><script>renderDot('ungerichtet', 'graph { rankdir=LR; a -- b;}');</script></div>
+						<div id="ungerichtet1" class="graph small" style="width: 15vw; height: 15vh;"><script>renderDot('ungerichtet1', 'graph { rankdir=LR; a -- b;}');</script></div>
+						<p class="fragment">==</p>
+						<div id="ungerichtet2" class="graph small fragment" style="width: 15vw; height: 15vh;"><script>renderDot('ungerichtet2', 'graph { rankdir=LR; b -- a;}');</script></div>
 					</section>
 					<section>
 						<h3>und <em>gerichteten</em> Graphen</h3>
-						<div id="gerichtet" class="graph small"><script>renderDot('gerichtet', 'digraph { rankdir=LR; a -> b [color="#17ff2e",penwidth=3.0];}');</script></div>
+						<div id="gerichtet1" class="graph small" style="width: 15vw; height: 15vh;"><script>renderDot('gerichtet1', 'digraph { rankdir=LR; a -> b;}');</script></div>
+						<p class="fragment">&ne;</p>
+						<div id="gerichtet2" class="graph small fragment" style="width: 15vw; height: 15vh;"><script>renderDot('gerichtet2', 'digraph { rankdir=LR; b -> a;}');</script></div>						
 					</section>
 					<section>
 						<h3><em>Bäume</em> sind Graphen mit einem Ursprungsknoten und genau einer Kante zu jedem Knoten</h3>
 						<div id="baum" class="graph small">
 							<script>renderDot('baum', `
-							graph {
+							digraph {
 								rankdir=LR;
-								a -- a1 [color="blue"];
-								a -- a2 [color="green"];
-								a -- a3 [color="red"];
-								a1 -- a1a [color="blue"];
-								a2 -- a2a [color="blue"];
-								a2 -- a2b [color="green"];
-								a3 -- a3a [color="blue"];
+								a -> a1 [color="blue"];
+								a -> a2 [color="green"];
+								a -> a3 [color="red"];
+								a1 -> a1a [color="blue"];
+								a2 -> a2a [color="blue"];
+								a2 -> a2b [color="green"];
+								a3 -> a3a [color="blue"];
 							}
 							`);
 							</script>
@@ -162,14 +254,14 @@
 						<h3><em>Binärbäume</em> sind Bäume mit maximal zwei Kindsknoten</h3>
 						<div id="bbaum" class="graph small">
 							<script>renderDot('bbaum', `
-							graph {
+							digraph {
 								rankdir=LR;
-								a -- a1 [color="blue"];
-								a -- a2 [color="green"];
-								a1 -- a1a [color="blue"];
-								a1 -- a1b [color="green"];
-								a2 -- a2a [color="blue"];
-								a2 -- a2b [color="green"];
+								a -> a1 [color="blue"];
+								a -> a2 [color="green"];
+								a1 -> a1a [color="blue"];
+								a1 -> a1b [color="green"];
+								a2 -> a2a [color="blue"];
+								a2 -> a2b [color="green"];
 							}
 							`);
 							</script>
@@ -199,7 +291,114 @@
 
 				<section>
 					<section>
-						<h2>Beispiele</h2>
+						<h2>Das Graphviz Ökosystem</h2>
+					</section>
+					<section>
+						<h3>Graphviz ist eine Software-Suite zum Visualisieren von Graphen</h3>
+					</section>
+					<section>
+						<h3>DOT ist eine Sprache um Graphen zu beschreiben</h3>
+					</section>
+					<section>
+						<h3>Graphviz bietet verschiedene Engines für die verschiedenen Grapharten</h3>
+					</section>
+					<section>
+						<h3><em>dot</em> &mdash; gerichtete, azyklische Graphen</h3>
+						<div id="dot" class="graph small">
+							<script>renderDot('dot',`
+									digraph {
+										a -> b;
+										b -> c;
+										c -> d;
+										b -> d;
+									}`
+								);
+							</script></div>
+					</section>
+					<section>
+						<h3><em>neato</em> &mdash; ungerichtete Graphen</h3>
+						<div id="neato" class="graph small">
+							<script>renderDot('neato',`
+									graph {
+										a -- b;
+										a -- e;
+										b -- c;
+										c -- d;
+										c -- e;
+										b -- d;
+									}`, 'neato'
+								);
+							</script></div>
+					</section>
+					<section>
+						<h3><em>circo</em> &mdash; zeichnet Graphen kreisförmig</h3>
+						<div id="circo" class="graph small">
+							<script>renderDot('circo',`
+									graph {
+										a -- b;
+										a -- e;
+										b -- c;
+										c -- d;
+										c -- e;
+										b -- d;
+									}`, 'circo'
+								);
+							</script></div>
+					</section>
+					<section>
+						<h3><em>fdp</em> &mdash; ungerichtete Graphen</h3>
+						<div id="fdp" class="graph small">
+							<script>renderDot('fdp',`
+									graph {
+										a -- b;
+										a -- e;
+										b -- c;
+										c -- d;
+										c -- e;
+										b -- d;
+									}`, 'fdp'
+								);
+							</script></div>
+					</section>
+					<section>
+						<h3><em>sfdp</em> &mdash; ungerichtete (große) Graphen</h3>
+					</section>
+					<section>
+						<h3><em>patchwork</em> &mdash; Squarified Treemap (rechteckiges Layout)</h3>
+						<div id="patchwork" class="graph small">
+							<script>renderDot('patchwork',`
+									graph {
+										a -- b;
+										a -- e;
+										b -- c;
+										c -- d;
+										c -- e;
+										b -- d;
+									}`, 'patchwork'
+								);
+							</script></div>
+					</section>
+					<section>
+						<h3><em>osage</em> &mdash; zeichnet Graphen in einer Clusterstruktur</h3>
+						<div id="osage" class="graph small">
+							<script>renderDot('osage',`
+									graph {
+										a -- b;
+										a -- e;
+										b -- c;
+										c -- d;
+										c -- e;
+										b -- d;
+									}`, 'osage'
+								);
+							</script></div>
+					</section>
+				</section>
+
+
+				<section>
+					<section>
+						<h2>Anwendungsbeispiele</h2>
 					</section>
 					<section>
 						<h3>Entscheidungsbaum</h3>
@@ -271,22 +470,6 @@
 							</script>
 						</div>
 						<span style="font-size: 12px;">Angelehnt an https://github.com/quux00/merkle-tree</span>
-					</section>
-					<section>
-						<h3>Maven Dependency Graph (Guava)</h3>
-						<div id="depgraph" class="graph large">
-							<script>renderDot('depgraph', `
-							digraph "com.google.guava:guava:bundle:HEAD-jre-SNAPSHOT" {
-							        "com.google.guava:guava:bundle:HEAD-jre-SNAPSHOT" -> "com.google.code.findbugs:jsr305:jar:3.0.2:compile" ;
-							        "com.google.guava:guava:bundle:HEAD-jre-SNAPSHOT" -> "org.checkerframework:checker-qual:jar:2.5.2:compile" ;
-							        "com.google.guava:guava:bundle:HEAD-jre-SNAPSHOT" -> "com.google.errorprone:error_prone_annotations:jar:2.1.3:compile" ;
-							        "com.google.guava:guava:bundle:HEAD-jre-SNAPSHOT" -> "com.google.j2objc:j2objc-annotations:jar:1.1:compile" ;
-							        "com.google.guava:guava:bundle:HEAD-jre-SNAPSHOT" -> "org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile" ;
-							        "com.google.guava:guava:bundle:HEAD-jre-SNAPSHOT" -> "jdk:srczip:jar:999:system" ;
-							 }
-					`);
-							</script>
-						</div>
 					</section>
 					<section>
 						<h3>Soziales Netzwerk</h3>
@@ -447,9 +630,26 @@ digraph G {
 			</section>
 
 			<section>
-				<h3>Livedemo!</h3>
-				<textarea id="dotsource1" onkeyup="renderDot('dotgraph1', this.value, true);" style="font-size: 14px; float: left; width: 20vw; height: 40vh; margin: 20px;"></textarea>
-				<div id="dotgraph1" style="float: left; margin: 20px; width: 35vw; height: 40vh;" class="graph"></div>
+			  <h3>Livedemo!</h3>
+			  <textarea id="dotsource1" onkeyup="renderDot('dotgraph1', this.value, document.getElementById('engineselect').value, true);" style="font-size: 14px; float: left; width: 20vw; height: 40vh; margin: 20px;"></textarea>
+			  <div id="dotgraph1" style="margin-top: 40px; margin-left: auto; overflow: hidden; display: block; height: 40vh;" class="graph"></div>
+			  <select id="engineselect" onchange="renderDot('dotgraph1', document.getElementById('dotsource1').value, this.value, true);" style="display: block; margin: 20px;">
+			  <option>dot</option>
+			  <option>neato</option>
+			  <option>circo</option>
+			  <option>fdp</option>
+			  <option>patchwork</option>
+			  <option>osage</option>
+			  </select>
+			  
+			  <aside class="notes">
+			    <ul>
+			      <li>ungerichteter graph</li>
+			      <li>gerichteter graph</li>
+			      <li>labels, shapes, fixedsize, styles</li>
+			      <li>subgraphs</li>
+			    </ul>
+			  </aside>
 			</section>
 
 			</div>
@@ -500,21 +700,6 @@ digraph G {
 							a [fillcolor="#1b91ff"]
 							a -- b [color="#17ff2e",penwidth=3.0];
 						}
-						`);
-				}
-				else if(event.fragment.id === 'zyklus') {
-					renderDot('netzwerk',`
-					digraph {
-						rankdir=LR
-						a -> b [label=1.0,weight=1.0];
-						b -> c [label=2.0,weight=2.0];
-						c -> d [label=1.5,weight=1.5,color=red,penwidth=3.0];
-						d -> e [label=1.0,weight=1.0,color=red,penwidth=3.0];
-						d -> b [label=1.5,weight=1.5];
-						e -> c [label=2.0,weight=2.0,color=red,penwidth=3.0];
-						{rank=same; b c};
-						{rank=same; d e};
-					}
 						`);
 				}
 			});

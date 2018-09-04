@@ -126,7 +126,7 @@
 				  </section>
 				  <section>
 				    <h3>Manuell?</h3>
-				    <p>z.B. mit Dia, xfig, Inkscape, Skencil, ...</p>
+				    <p>Graph selber malen, z.B. mit Dia, xfig, Inkscape, Skencil, ...</p>
 				    <ul style="list-style-type: none;">
 				      <li class="fragment">+ WYSIWYG</li>
 				      <li class="fragment">+ einfach zu bedienen</li>
@@ -137,6 +137,7 @@
 				  </section>
 				  <section>
 				    <h3>Automatisch!</h3>
+				    <p>Graph wird <em>beschrieben</em>, anstatt gemalt!</p>
 				  </section>				 				  
 				</section>				
 				
@@ -236,15 +237,15 @@
 						<h3><em>Bäume</em> sind Graphen mit einem Ursprungsknoten und genau einer Kante zu jedem Knoten</h3>
 						<div id="baum" class="graph small">
 							<script>renderDot('baum', `
-							digraph {
+							graph {
 								rankdir=LR;
-								a -> a1 [color="blue"];
-								a -> a2 [color="green"];
-								a -> a3 [color="red"];
-								a1 -> a1a [color="blue"];
-								a2 -> a2a [color="blue"];
-								a2 -> a2b [color="green"];
-								a3 -> a3a [color="blue"];
+								a -- a1 [color="blue"];
+								a -- a2 [color="green"];
+								a -- a3 [color="red"];
+								a1 -- a1a [color="blue"];
+								a2 -- a2a [color="blue"];
+								a2 -- a2b [color="green"];
+								a3 -- a3a [color="blue"];
 							}
 							`);
 							</script>
@@ -254,14 +255,14 @@
 						<h3><em>Binärbäume</em> sind Bäume mit maximal zwei Kindsknoten</h3>
 						<div id="bbaum" class="graph small">
 							<script>renderDot('bbaum', `
-							digraph {
+							graph {
 								rankdir=LR;
-								a -> a1 [color="blue"];
-								a -> a2 [color="green"];
-								a1 -> a1a [color="blue"];
-								a1 -> a1b [color="green"];
-								a2 -> a2a [color="blue"];
-								a2 -> a2b [color="green"];
+								a -- a1 [color="blue"];
+								a -- a2 [color="green"];
+								a1 -- a1a [color="blue"];
+								a1 -- a1b [color="green"];
+								a2 -- a2a [color="blue"];
+								a2 -- a2b [color="green"];
 							}
 							`);
 							</script>
@@ -472,47 +473,38 @@
 						<span style="font-size: 12px;">Angelehnt an https://github.com/quux00/merkle-tree</span>
 					</section>
 					<section>
-						<h3>Soziales Netzwerk</h3>
-						<div id="sozial" class="graph large">
-							<script>renderDot('sozial', `
-							graph {
-								node [shape=box,style=filled]
+						<h3>Endlicher Automat (FSM)</h3>
+						<div id="fsm" class="graph large">
+						  <script>renderDot('fsm', `
+digraph {
+  rankdir=LR;
+  ratio=fill;
+  size="6,4"
+  node [width=0.6, fixedsize=true, fontsize=10];
+  node [shape=doublecircle]; new; terminated;
+  node [shape=circle];
+  edge [color=black, fontsize=6];
 
-								subgraph {
-								  node [shape=box,style=filled,fillcolor="lightblue"];
-								  a [label="Daniel"];
-								  b [label="Lisa"];
-								  h [label="Ulrich"];
-								  c [label="Moritz"];
-								}
+  timed_waiting [label="timed_\nwaiting"];
 
-							  subgraph {
-								  node [shape=box,style=filled,fillcolor="green"];
-								  d [label="Emma"];
-								  e [label="Max"];
-								  f [label="Ulrike"];
-							  }
+  new -> runnable [label="start() method\n invoked"];
 
-							  g [label="Herbert"];
-							  a -- h;
-							  h -- b;
-							  h -- c;
-							  a -- b;
-							  a -- c;
-							  c -- b;
-							  c -- e;
-							  d -- e;
-							  d -- f;
-							  g -- d;
-							  e -- f;
+  runnable -> waiting [xlabel="waiting for\n its turn"];
+  waiting -> runnable [xlabel="notified to\n proceed"];
+  runnable -> blocked [xlabel="waiting for\n monitor lock"];
+  blocked -> runnable [xlabel="monitor lock\n acquired"];
 
-							  {rank=same; a b};
-							  {rank=same; c h};
-							  {rank=same; e f};
-							}
+  runnable -> timed_waiting [xlabel="wait with\n timeout"];
+  timed_waiting -> runnable [xlabel="notified to process\n or timeout exceeded"];
+
+  runnable -> terminated [label="thread execution\n over"];
+
+  {rank=same; runnable blocked waiting}
+}						    
 					`);
 						</script>
-					</div>
+						</div>
+						<span style="font-size: 12px;">Angelehnt an https://www.javabrahman.com/corejava/understanding-thread-life-cycle-thread-states-in-java-tutorial-with-examples/</span>
 				</section>
 				<section>
 					<h3>Organigramm</h3>

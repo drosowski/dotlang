@@ -54,8 +54,8 @@
 				height: 30vh;
 			}
 			div.graph.large {
-				width: 50vw;
-				height: 50vh;
+				width: 45vw;
+				height: 45vh;
 			}
 			svg {
 				display: inline;
@@ -64,7 +64,10 @@
 				max-width: inherit;
 				height: inherit;
 				min-height: inherit;
-				max-height: inherit;
+			        max-height: inherit;
+			}
+			blockquote.small {
+			        font-size: 0.5em;
 			}
 		</style>
 	</head>
@@ -97,22 +100,42 @@
 
 
 				<section>
+				  <pre><code data-trim data-noescape>$ whoami</code></pre>
+				  <div style="float: left; margin-left: 2.5vw;"><img src="img/me.jpg" style="width: 15vw;"/></div>
+				  <table border="0">
+				    <tr><td>Daniel Rosowski</td></tr>
+				    <tr><td>Softwareentwickler</td></tr>
+				    <tr><td><img src="img/sq.png" style="width: 25vw; border: 0;"/></td></tr>
+				    <tr><td><img src="img/jugbi.png" style="width: 5vw; border: 0;"/></td></tr>
+				  </table>
+				</section>
+
+
+				<section>
 				  <section>
 				    <h2>Wozu Visualisieren?</h2>
+
+				  </section>
+				  <section>
+				    <h3>Gemeinsames Verständnis schaffen</h3>
 				    <aside class="notes">
 				      <ul>
-					<li>"Der Benutzer ist doch eh zu dumm"</li>
-				      </ul>				      
-				    </aside>				    
+					<li>Beispiel wireframing</li>
+					<li>Beispiel whiteboard</li>
+					<li>Beispiel erm</li>
+				      </ul>
+				    </aside>
 				  </section>
 				  <section>
-				    <h3>Verständnis schaffen</h3>				    
+				    <h3>Nachvollziehbarkeit</h3>
+				    <aside class="notes">
+				      <ul>
+					<li>Beispiel Entscheidungsbaum</li>
+				      </ul>
+				    </aside>
 				  </section>
 				  <section>
-				    <h3>Nachvollziehbarkeit</h3>				    
-				  </section>
-				  <section>
-				    <h3>Debugging</h3>				    
+				    <h3>Debugging</h3>
 				  </section>
 				</section>
 
@@ -132,62 +155,21 @@
 				      <li class="fragment">+ einfach zu bedienen</li>
 				      <li class="fragment">- Layout ist Handarbeit</li>
 				      <li class="fragment">- nicht skriptbar</li>
-				      <li class="fragment">- große Graphen kaum beherrschbar</li>				      
-				    </ul>				    
+				      <li class="fragment">- große Graphen kaum beherrschbar</li>
+				    </ul>
+				    <aside class="notes">
+				      <ul>
+					<li>Layout ist PITA, selbst schon bei kleinen Diagrammen!</li>
+					<li>Beispiel Archdoc mit PowerPoint</li>
+				      </ul>
+				    </aside>
 				  </section>
 				  <section>
 				    <h3>Automatisch!</h3>
 				    <p>Graph wird <em>beschrieben</em>, anstatt gemalt!</p>
-				  </section>				 				  
-				</section>				
-				
-
-
-				<section>
-					<section>
-						<h2>Verborgene Schätze in der IT</h2>
-					</section>
-					<section>
-					  <h2>diff / patch</h2>
-<pre><code data-trim data-noescape>
---- telefonliste2007.txt    2007-12-28 13:12:34.000000000 +0100
-+++ telefonliste2008.txt    2008-07-28 14:16:26.000000000 +0100
-@@ -1,4 +1,5 @@
- Mayer, Susanne, Lager, -212
- Schmid, Carola, Geschäftsleitung, -435
--Schmidt, Eberhard, Vertrieb, -479
- Schmitt, Marie, Labor, -804
-+Waldmann, Ernst, Labor, -805
-+Zundel, Walter, Vertrieb, -476
-</code></pre>
-<span style="font-size: 12px;">&copy; Wikipedia</span>
-					</section>
-					<section>
-					  <h2>crontab</h2>
-<pre><code data-trim data-noescape>
-# Crontab Beispiel
-45 23 * * 6 /bin/prog.sh
-</code></pre>
-					</section>
-					<section>
-					  <h2>TeX, Markdown, asciidoc, etc.</h2>
-<pre><code data-trim data-noescape>				    
-\documentclass[12pt]{article}
-\usepackage{lingmacros}
-\usepackage{tree-dvips}
-\begin{document}
-
-\section*{Ein Bild sagt mehr als tausend Worte}
-</code></pre>
-					</section>
-					<section>
-						<h2>CSV</h2>
-						<p class="fragment ">Nein, wirklich, ich meine es ernst! :-)</p>
-					</section>
-					<section>
-						<h2>DOT</h2>
-					</section>
+				  </section>
 				</section>
+
 
 
 				<section>
@@ -231,7 +213,7 @@
 						<h3>und <em>gerichteten</em> Graphen</h3>
 						<div id="gerichtet1" class="graph small" style="width: 15vw; height: 15vh;"><script>renderDot('gerichtet1', 'digraph { rankdir=LR; a -> b;}');</script></div>
 						<p class="fragment">&ne;</p>
-						<div id="gerichtet2" class="graph small fragment" style="width: 15vw; height: 15vh;"><script>renderDot('gerichtet2', 'digraph { rankdir=LR; b -> a;}');</script></div>						
+						<div id="gerichtet2" class="graph small fragment" style="width: 15vw; height: 15vh;"><script>renderDot('gerichtet2', 'digraph { rankdir=LR; b -> a;}');</script></div>
 					</section>
 					<section>
 						<h3><em>Bäume</em> sind Graphen mit einem Ursprungsknoten und genau einer Kante zu jedem Knoten</h3>
@@ -306,7 +288,7 @@
 					<section>
 						<h3><em>dot</em> &mdash; gerichtete, azyklische Graphen</h3>
 						<div id="dot" class="graph small">
-							<script>renderDot('dot',`
+						  <script>renderDot('dot',`
 									digraph {
 										a -> b;
 										b -> c;
@@ -314,12 +296,14 @@
 										b -> d;
 									}`
 								);
-							</script></div>
+						  </script>
+						</div>
+						<blockquote class="small"><p>dot draws directed graphs.  It works well on DAGs and other graphs that can be drawn as hierarchies.</p></blockquote>
 					</section>
 					<section>
 						<h3><em>neato</em> &mdash; ungerichtete Graphen</h3>
 						<div id="neato" class="graph small">
-							<script>renderDot('neato',`
+						  <script>renderDot('neato',`
 									graph {
 										a -- b;
 										a -- e;
@@ -329,12 +313,49 @@
 										b -- d;
 									}`, 'neato'
 								);
-							</script></div>
+						  </script>
+						</div>
+						<blockquote class="small"><p>neato draws undirected graphs using 'spring' models</p></blockquote>
+						<blockquote style="font-size: 0.3em;" class="fragment"><p>We regard
+the desirable “geometric” (Euclidean) distance between two vertices in the drawing as the “graph
+theoretic” distance between them in the corresponding graph. We introduce a virtual dynamic system in
+which every two vertices are connected by a “spring” of such desirable length. Then, we regard the optimal
+layout of vertices as the state in which the total spring energy of the system is minimal. </p></blockquote>
+					</section>
+					<section>
+						<h3><em>twopi</em> &mdash; zeichnet Graphen kreisförmig</h3>
+						<div id="twopi" class="graph small">
+						  <script>renderDot('twopi',`
+graph {
+a b c d e f g h i j;
+b -- a;
+b -- c;
+c -- a;
+c -- d;
+d -- a;
+d -- e;
+e -- f;
+e -- a;
+f -- g;
+f -- a;
+g -- a;
+g -- b;
+g -- h;
+h -- b;
+h -- i;
+i -- c;
+i -- j;
+j -- d;
+						    }`, 'twopi'
+								);
+						  </script>
+						</div>
+						<blockquote class="small"><p>twopi draws graphs using a radial layout (...).  Basically, one node is chosen as the center and put at  the  origin.  The remaining nodes are placed on a sequence of concentric circles centered about the origin, each a fixed radial distance from the previous circle.</p></blockquote>
 					</section>
 					<section>
 						<h3><em>circo</em> &mdash; zeichnet Graphen kreisförmig</h3>
 						<div id="circo" class="graph small">
-							<script>renderDot('circo',`
+						  <script>renderDot('circo',`
 									graph {
 										a -- b;
 										a -- e;
@@ -344,12 +365,14 @@
 										b -- d;
 									}`, 'circo'
 								);
-							</script></div>
+						  </script>
+						</div>
+						<blockquote class="small"><p>circo draws graphs using a circular layout (...). The tool identifies biconnected components and  draws the  nodes  of the component on a circle. The block-cutpoint tree is then laid out using a recursive radial algorithm. Edge crossings within a circle are minimized by placing as many edges on the circle's perimeter as possible.</p></blockquote>
 					</section>
 					<section>
 						<h3><em>fdp</em> &mdash; ungerichtete Graphen</h3>
 						<div id="fdp" class="graph small">
-							<script>renderDot('fdp',`
+						  <script>renderDot('fdp',`
 									graph {
 										a -- b;
 										a -- e;
@@ -359,7 +382,9 @@
 										b -- d;
 									}`, 'fdp'
 								);
-							</script></div>
+						  </script>
+						</div>
+						<blockquote class="small"><p>fdp  draws  undirected  graphs  using a 'spring' model. It relies on a force-directed approach in the spirit of Fruchterman and Reingold.</p></blockquote>
 					</section>
 					<section>
 						<h3><em>sfdp</em> &mdash; ungerichtete (große) Graphen</h3>
@@ -367,7 +392,7 @@
 					<section>
 						<h3><em>patchwork</em> &mdash; Squarified Treemap (rechteckiges Layout)</h3>
 						<div id="patchwork" class="graph small">
-							<script>renderDot('patchwork',`
+						  <script>renderDot('patchwork',`
 									graph {
 										a -- b;
 										a -- e;
@@ -377,12 +402,14 @@
 										b -- d;
 									}`, 'patchwork'
 								);
-							</script></div>
+						  </script>
+						</div>
+						<blockquote class="small"><p>patchwork  draws  the  graph  as  a  squarified  treemap (...). The clusters of the graph are used to specify the tree.</p></blockquote>
 					</section>
 					<section>
 						<h3><em>osage</em> &mdash; zeichnet Graphen in einer Clusterstruktur</h3>
 						<div id="osage" class="graph small">
-							<script>renderDot('osage',`
+						  <script>renderDot('osage',`
 									graph {
 										a -- b;
 										a -- e;
@@ -392,7 +419,9 @@
 										b -- d;
 									}`, 'osage'
 								);
-							</script></div>
+						  </script>
+						</div>
+						<blockquote class="small"><p>osage  draws clustered graphs. As input, it takes any graph in the dot format. It draws the graph recursively. At each level, there will be a collection of nodes and a collection of cluster subgraphs.  The internals of each cluster subgraph are laid out, then the cluster subgraphs and nodes at the current level are positioned relative to each other, treating each cluster subgraph as a node.</p></blockquote>
 					</section>
 				</section>
 
@@ -433,6 +462,12 @@
 							`);
 							</script>
 						</div>
+						<aside class="notes">
+						  <ul>
+						    <li>20Q Entscheidungsbaum sample size / 2</li>
+						    <li>Zuhilfenahme von Entropy</li>
+						  </ul>
+						</aside>
 					</section>
 					<section>
 						<h3>Hashbaum (Merkle Tree)</h3>
@@ -471,6 +506,11 @@
 							</script>
 						</div>
 						<span style="font-size: 12px;">Angelehnt an https://github.com/quux00/merkle-tree</span>
+						<aside class="notes">
+						  <ul>
+						    <li>Einsatz bspw. Blockchain</li>
+						  </ul>
+						</aside>
 					</section>
 					<section>
 						<h3>Endlicher Automat (FSM)</h3>
@@ -500,7 +540,7 @@ digraph {
   runnable -> terminated [label="thread execution\n over"];
 
   {rank=same; runnable blocked waiting}
-}						    
+}
 					`);
 						</script>
 						</div>
@@ -619,6 +659,26 @@ digraph G {
 					</div>
 					<span style="font-size: 12px;">&copy; https://zhu45.org/posts/2017/May/25/draw-a-neural-network-through-graphviz/</span>
 				</section>
+				<section>
+				  <h3>Istio Servicegraph</h3>
+				  <div>
+				    <img src="img/istio.png" style="border: 0; width: 15vw;"/>
+				  </div>
+				  <span style="font-size: 12px;">&copy; https://istio.io/docs/tasks/telemetry/servicegraph/</span>
+				</section>
+				<section>
+				  <h3>Weitere Beispiele aus der Praxis</h3>
+				  <ul>
+				    <li class="fragment">Maven Dependencies Plugin</li>
+				    <pre class="fragment"><code data-trim data-noescape>mvn dependency:tree -Dincludes=com.example -DappendOutput=true
+	-DoutputType=dot -DoutputFile=/path/to/output.gv</code></pre>
+				    <li class="fragment">jdeps</li>
+				    <pre class="fragment"><code data-trim data-noescape>jdeps -dotoutput target &lt;classes&gt;</code></pre>
+				    <li class="fragment">PlantUML</li>
+				    <li class="fragment">jdcallgraph</li>
+				  </ul>
+				</section>
+
 			</section>
 
 			<section>
@@ -627,13 +687,14 @@ digraph G {
 			  <div id="dotgraph1" style="margin-top: 40px; margin-left: auto; overflow: hidden; display: block; height: 40vh;" class="graph"></div>
 			  <select id="engineselect" onchange="renderDot('dotgraph1', document.getElementById('dotsource1').value, this.value, true);" style="display: block; margin: 20px;">
 			  <option>dot</option>
+			  <option>twopi</option>
 			  <option>neato</option>
 			  <option>circo</option>
 			  <option>fdp</option>
 			  <option>patchwork</option>
 			  <option>osage</option>
 			  </select>
-			  
+
 			  <aside class="notes">
 			    <ul>
 			      <li>ungerichteter graph</li>
@@ -642,6 +703,23 @@ digraph G {
 			      <li>subgraphs</li>
 			    </ul>
 			  </aside>
+			</section>
+
+			<section>
+			  <h2>Über dem Tellerrand</h2>
+			  <ul>
+			    <li class="fragment"><a href="https://www.yworks.com/products/yfiles">yfiles</a></li>
+			    <li class="fragment"><a href="https://www.gephi.org">gephi</a></li>
+			    <li class="fragment"><a href="http://tinkerpop.apache.org/">Apache Tinkerpop</a></li>
+			    <li class="fragment"><a href="https://neo4j.com/">Neo4j</a></li>
+			    <li class="fragment"><a href="https://github.com/google/guava">Google Guava</a></li>
+			    <li class="fragment"><a href="https://github.com/jrtom/jung">JUNG</a></li>
+			  </ul>
+
+			</section>
+
+			<section>
+			  <h2>Vielen Dank!</h2>
 			</section>
 
 			</div>

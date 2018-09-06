@@ -101,7 +101,10 @@
 
 				<section>
 				  <pre><code data-trim data-noescape>$ whoami</code></pre>
-				  <div style="float: left; margin-left: 2.5vw;"><img src="img/me.jpg" style="width: 15vw;"/></div>
+				  <div style="float: left; margin-left: 50px;">
+				    <img src="img/me.jpg" style="width: 25vw;"/><br/>
+				    <img src="img/bielefeld.png" style="width: 25vw; border: 0;"/>
+				  </div>
 				  <table border="0">
 				    <tr><td>Daniel Rosowski</td></tr>
 				    <tr><td>Softwareentwickler</td></tr>
@@ -154,8 +157,8 @@
 				      <li class="fragment">+ WYSIWYG</li>
 				      <li class="fragment">+ einfach zu bedienen</li>
 				      <li class="fragment">- Layout ist Handarbeit</li>
-				      <li class="fragment">- nicht skriptbar</li>
 				      <li class="fragment">- große Graphen kaum beherrschbar</li>
+				      <li class="fragment">- nicht skriptbar</li>
 				    </ul>
 				    <aside class="notes">
 				      <ul>
@@ -205,15 +208,55 @@
 					</section>
 					<section>
 						<h3>Es wird unterschieden zwischen <em>ungerichteten</em> Graphen</h3>
-						<div id="ungerichtet1" class="graph small" style="width: 15vw; height: 15vh;"><script>renderDot('ungerichtet1', 'graph { rankdir=LR; a -- b;}');</script></div>
+						<div id="ungerichtet1" class="graph small" style="width: 15vw; height: 15vh;">
+						  <script>renderDot('ungerichtet1', `
+						    graph {
+						    rankdir=LR;
+						    node [style=filled];
+						    a [fillcolor=lightblue];
+						    b [fillcolor=coral];
+						    a -- b;
+						    }`);
+						  </script>
+						</div>
 						<p class="fragment">==</p>
-						<div id="ungerichtet2" class="graph small fragment" style="width: 15vw; height: 15vh;"><script>renderDot('ungerichtet2', 'graph { rankdir=LR; b -- a;}');</script></div>
+						<div id="ungerichtet2" class="graph small fragment" style="width: 15vw; height: 15vh;">
+						  <script>renderDot('ungerichtet2', `
+						    graph {
+						    rankdir=LR;
+						    node [style=filled];
+						    a [fillcolor=lightblue];
+						    b [fillcolor=coral];
+						    b -- a;
+						    }`);
+						  </script>
+						</div>
 					</section>
 					<section>
-						<h3>und <em>gerichteten</em> Graphen</h3>
-						<div id="gerichtet1" class="graph small" style="width: 15vw; height: 15vh;"><script>renderDot('gerichtet1', 'digraph { rankdir=LR; a -> b;}');</script></div>
+					  <h3>und <em>gerichteten</em> Graphen</h3>
+						<div id="gerichtet1" class="graph small" style="width: 15vw; height: 15vh;">
+						  <script>renderDot('gerichtet1', `
+						    digraph {
+						    rankdir=LR;
+						    node [style=filled];
+						    a [fillcolor=lightblue];
+						    b [fillcolor=coral];
+						    a -> b;
+						    }`);
+						  </script>
+						</div>
 						<p class="fragment">&ne;</p>
-						<div id="gerichtet2" class="graph small fragment" style="width: 15vw; height: 15vh;"><script>renderDot('gerichtet2', 'digraph { rankdir=LR; b -> a;}');</script></div>
+						<div id="gerichtet2" class="graph small fragment" style="width: 15vw; height: 15vh;">
+						  <script>renderDot('gerichtet2', `
+						    digraph {
+						    rankdir=LR;
+						    node [style=filled];
+						    a [fillcolor=lightblue];
+						    b [fillcolor=coral];
+						    b -> a;
+						    }`);
+						  </script>
+						</div>
 					</section>
 					<section>
 						<h3><em>Bäume</em> sind Graphen mit einem Ursprungsknoten und genau einer Kante zu jedem Knoten</h3>
@@ -323,7 +366,7 @@ which every two vertices are connected by a “spring” of such desirable lengt
 layout of vertices as the state in which the total spring energy of the system is minimal. </p></blockquote>
 					</section>
 					<section>
-						<h3><em>twopi</em> &mdash; zeichnet Graphen kreisförmig</h3>
+						<h3><em>twopi</em> &mdash; zeichnet Graphen spiralförmig</h3>
 						<div id="twopi" class="graph small">
 						  <script>renderDot('twopi',`
 graph {
@@ -428,7 +471,10 @@ j -- d;
 
 				<section>
 					<section>
-						<h2>Anwendungsbeispiele</h2>
+					  <h2>Anwendungsbeispiele</h2>
+					  <aside class="notes">
+					    live gerendert im Browser!
+					  </aside>
 					</section>
 					<section>
 						<h3>Entscheidungsbaum</h3>
@@ -464,7 +510,7 @@ j -- d;
 						</div>
 						<aside class="notes">
 						  <ul>
-						    <li>20Q Entscheidungsbaum sample size / 2</li>
+						    <li>20Q Entscheidungsbaum Lösungsraum / 2</li>
 						    <li>Zuhilfenahme von Entropy</li>
 						  </ul>
 						</aside>
@@ -662,7 +708,7 @@ digraph G {
 				<section>
 				  <h3>Istio Servicegraph</h3>
 				  <div>
-				    <img src="img/istio.png" style="border: 0; width: 15vw;"/>
+				    <img src="img/istio.png" style="width: 15vw;"/>
 				  </div>
 				  <span style="font-size: 12px;">&copy; https://istio.io/docs/tasks/telemetry/servicegraph/</span>
 				</section>
@@ -675,6 +721,7 @@ digraph G {
 				    <li class="fragment">jdeps</li>
 				    <pre class="fragment"><code data-trim data-noescape>jdeps -dotoutput target &lt;classes&gt;</code></pre>
 				    <li class="fragment">PlantUML</li>
+				    <li class="fragment">Doxygen</li>
 				    <li class="fragment">jdcallgraph</li>
 				  </ul>
 				</section>
@@ -708,6 +755,7 @@ digraph G {
 			<section>
 			  <h2>Über dem Tellerrand</h2>
 			  <ul>
+			    <li class="fragment"><a href="https://github.com/magjac/d3-graphviz">d3-graphviz</a></li>
 			    <li class="fragment"><a href="https://www.yworks.com/products/yfiles">yfiles</a></li>
 			    <li class="fragment"><a href="https://www.gephi.org">gephi</a></li>
 			    <li class="fragment"><a href="http://tinkerpop.apache.org/">Apache Tinkerpop</a></li>

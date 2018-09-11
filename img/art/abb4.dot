@@ -1,0 +1,7 @@
+digraph {
+    rankdir=LR;
+    a -> b;
+    b -> c -> d -> b [penwidth=2, color=red];
+    d -> e;
+    {rank=same c d}
+}

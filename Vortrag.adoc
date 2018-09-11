@@ -1,0 +1,68 @@
+==== Vortrag
+
+* Slides
+
+* Syntax Live zeigen
+
+graph html {
+  html;
+  head;
+  body;
+  html -- head;
+  html -- body;
+  head -- title;
+  head -- meta;
+  body -- h1;
+  body -- p;
+  body -- span;
+}
+
+digraph fsm {
+  node [shape=doublecircle];
+  start;
+  stop;
+
+  node [shape=circle];
+  start -> step1 [label="new"];
+  step1 -> step2 [label="first step"];
+  step2 -> step4 [xlabel="sidestep"];
+  step4 -> step2;
+  step2 -> step3;
+  step3 -> step1 [label="back to start"];
+  step3 -> stop [label="finished"];
+}
+
+* DESIGN
+* bgcolor="#ffffff00" (transparent)
+* label
+* fontname/fontcolor
+* image (hat nicht funktioniert)
+* width/height/fixedsize
+* shape/style
+* fillcolor
+* globale node/edge styles
+* grouping / subgraphs
+* records
+* HTML
+  html [label=<<table><tr><td>KEY</td><td>VALUE</td></tr><tr><td>Hallo</td><td>Welt</td></tr></table>>];
+
+* LAYOUT
+* rankdir
+* rank
+* ranksep
+
+
+* webviz zeigen
+* Java Datenstrukturen
+** Strings
+** Arrays, mit Objekten und Primitives
+** ArrayList
+** LinkedList
+** HashMap
+** TreeMap
+* Les Miserables
+** GmlRenderer
+** viz.js
+* Taxtree
+** TaxTreeRenderer
+** Freemarker Templates

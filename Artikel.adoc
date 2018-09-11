@@ -1,49 +1,75 @@
+:source-highlighter: rouge
+:imagesdir: img/art
+
 = Ein Bild sagt mehr als tausend Worte
 Daniel Rosowski <rosowski@smartsquare.de>
-v1.0, 31.08.2018
+v1.0, 11.09.2018
 
-In der IT schlummern so manche verborgenen Schätze, die auf den ersten Blick ihr Potential verbergen.
-Dazu zähle ich beispielsweise diff und patch.
-Durch ein einheitliches, textuelles Format (unidiff), findet es weite Verbreitung, auch über die Softwareentwicklungsbranche hinaus.
-Ein weiterer Kandidat sind sämtliche Markup Sprachen, seien es die älteren Vertreter wie TeX, oder auch die neueren Varianten wie z.B. asciidoc.
-Hierbei handelt es sich auch um ein textuelles Format, bei dem das Layouts eines Artikels, Buchs oder sonst einer Publikation beschrieben wird.
-Demnach macht es in den allermeisten Fällen durchaus Sinn, erst einmal zu gucken, welche Probleme bereits durch andere schlaue Menschen gelöst wurden.
+[.lead]
+Visualisierung ist ein wichtiges Werkzeug für jeden Softwareentwickler, um komplexe Sachverhalte für sich und Kollegen zu veranschaulichen.
+Viele von uns kennen leider nur die allgemein üblichen WYSIWYG Tools, bei denen Handarbeit gefragt ist.
+Aber gerade wenn es darum geht Datenstrukturen aus laufenden Programmen zu visualisieren, ist es hilfreich, wenn man sein Diagramm beschreiben kann anstatt es selber zu malen.
+Das Layout wird daraufhin algorithmisch ermittelt und der Graph gerendert.
+In diesem Artikel wollen wir uns mit DOT, einer Beschreibungssprache für Graphen befassen, die genau für diesen Anwendungsfall konzipiert wurde.
+Wir werden sehen, dass sie durchaus Anwendung jenseits akademischer Kreise findet und ein vielseitiges Werkzeug ist, das in keinem Werkzeugkasten eines Entwicklers fehlen sollte.
 
-So auch im Fall der Visualisierung von Datenstrukturen.
-Das Thema ist wahrlich nicht neu und begleitet die IT bereits seit ihren Anfängen.
-Ende der 90er Jahre wurde von AT&T Labs eine Beschreibungssprache für Datenstrukturen entwickelt, die sich DOT nennt.
-DOT reiht sich in die oben genannten Werkzeuge ein, da es sich um ein rein textuelles Format handelt, das zudem noch sehr gut dokumentiert ist.
-Die Beschreibungen sind dadurch einfach und ohne Zuhilfenahme eines Tools zu erstellen und auch zu verarbeiten.
-Um genau zu sein, handelt es sich bei DOT um eine Beschreibungssprache für Graphen.
-Die dazugehörige Softwaresuite nennt sich Graphviz und umfasst verschiedene Engines um die, in DOT beschriebenen Graphen zu rendern.
+In der Informatik liegen uns die meisten Informationen in strukturierter Form vor und können in der Regel als Graphen dargestellt werden.
+Häufig werden z.B. Computernetzwerke in einer Netzwerktopologie dargestellt.
+Oder die verschiedenen Arbeitsschritte eines Algorithmus werden in einem Flussdiagramm veranschaulicht.
+Selbst unsere heißgeliebten UML Diagramme sind nichts anderes als gerichtete Graphen.
+Kurz gesagt, eignen sich Graphen hervorragend um komplexe Sachverhalte zu visualisieren, da es den meisten Menschen leicht fällt, den Sinn hinter einer Handvoll, miteinander verbundenen Kästchen zu sehen.
+
+Es gibt viele gute Werkzeuge um Graphen selber zu zeichnen, sei es Dia, xfig, Inkscape oder Skencil um nur einige freie Varianten zu nennen.
+Aber gerade wenn es sich um große Graphen handelt, oder um Graphen die sich häufig ändern, wäre es gut, wenn wir unsere Graphen beschreiben könnten und das Layout automatisch erzeugt würde.
+Hier kommt die DOT Sprache ins Spiel.
+
+DOT wurde bereits gegen Ende der 90er Jahre von AT&T Labs entwickelt und umfasst eine vollständige Grammatik um gerichtete und ungerichtete Graphen (dazu später mehr) zu beschreiben.
+Ganz im Sinne der Unix Philosophie ("do one thing and do it well", "handle text streams, because that is a universal interface" <<1>>), macht dot genau eine Sache, nämlich das Layout eines Graphen, der in einem Textformat beschrieben wird.
+Das hat den Vorteil, dass diese Beschreibungen ganz einfach und ohne Zuhilfenahme eines Tools erstellt und (wenn nötig) auch verarbeitet werden können.
+Die freie Softwaresuite Graphviz, interpretiert das DOT Format und bietet verschiedene Algorithmen für das Layouting der Graphen an.
 
 Aber eins nach dem anderen.
 Wer Graphen in DOT beschreiben möchte, sollte sich erst einmal mit den Grundlagen der Graphentheorie vertraut machen.
 Aber keine Sorge, es folgt keine seitenlange, theoretische Abhandlung.
 Tatsächlich reichen eine Handvoll grundlegende Konzepte um DOT bereits sinnvoll einsetzen zu können.
 
-== Graphentheorie
-Ein Graph besteht aus Knoten und Kanten (vgl. Abb. 1).
+== Ein bisschen Theorie
+Ein Graph besteht aus einer Menge von Knoten und Kanten.
 Wenn ein Knoten auf einen anderen Knoten (oder auch auf sich selbst) verweist, nennt man die Verbindung zwischen den beiden Knoten eine Kante.
 Es wird zwischen ungerichteten und gerichteten Graphen unterschieden.
-Bei einem ungerichteten Graphen, ist die Richtung ohne Bedeutung. A -- B ist genau das Gleiche wie B -- A (vgl. Abb. 2).
-Anders verhält es sich bei dem gerichteten Graph. A -> B ist ein anderer Graph als B -> A, da die Richtung entscheidend ist.
+Bei einem ungerichteten Graphen, ist die Richtung der Kante ohne Bedeutung. `A -- B` ist genau das Gleiche wie `B -- A` (vgl. <<Abb1>>).
 
-Ein Baum ist ein spezieller gerichteter, azyklischer Graph, der von einem Ursprungsknoten (Wurzel) ausgeht und 1 bis n Kindsknoten besitzt.
-Jeder Kindsknoten besitzt dann wiederum 1 bis n Kindsknoten usw. bis die Kindsknoten am Ende keine weiteren Knoten referenzieren.
-Diese Kindsknoten am Ende des Baums werden auch Blätter genannt (vgl. Abb. 3).
+[#Abb1]
+image::abb1.png[]
+
+Anders verhält es sich bei dem gerichteten Graph. `A -> B` ist ein anderer Graph als `B -> A`, da die Richtung entscheidend ist (vgl. <<Abb2>>).
+
+[#Abb2]
+image::abb2.png[]
+
+
+Ein Baum ist ein spezieller azyklischer Graph, der von einem Ursprungsknoten (Wurzel) ausgeht und 1 bis _n_ Kindsknoten besitzt.
+Jeder Kindsknoten besitzt dann wiederum 1 bis _n_ Kindsknoten usw. bis die Kindsknoten am Ende keine weiteren Knoten referenzieren.
+Diese Kindsknoten am Ende des Baums werden auch Blätter genannt (vgl. <<Abb3>>).
+
+[#Abb3]
+image::abb3.png[]
 
 Ein Netzwerk ist ein gerichteter Graph mit gewichteten Kanten.
 Anders als bei einem Baum, dürfen in einem Netzwerk Zyklen auftreten.
-Ein Zyklus ist eine kreisförmige Beziehung zwischen verschiedenen Knoten (vgl. Abb. 4).
-Wie wir *später* sehen werden, findet die unterschiedliche Gewichtung der Kanten bei dem Rendering des Graphen durch Graphviz Beachtung.
+Ein Zyklus ist eine kreisförmige Beziehung zwischen verschiedenen Knoten (vgl. <<Abb4>>).
 
-== Syntax
+[#Abb4]
+image::abb4.png[]
+
+== Die Syntax
 Damit hätten wir auch schon alles, was wir an Theorie benötigen, um unsere ersten Graphen zu beschreiben.
 Kommen wir als nächstes zur Syntax, oder zur Grammatik der DOT Sprache.
-Der dümmste anzunehmende Graph besteht aus zwei Knoten und einer verbindenden Kante und ist ungerichtet (vgl. <<listing1>>).
+Der dümmste anzunehmende Graph besteht aus zwei Knoten und einer verbindenden Kante und ist ungerichtet (vgl. <<Listing1>>).
 
-[listing1]
+TIP: Um die hier angegebenen Beispiele live nachvollziehen zu können, kann *viz-js.com* verwendet werden.
+
+[#Listing1]
 ----
 graph {  <1>
   a -- b <2>
@@ -51,3 +77,393 @@ graph {  <1>
 ----
 <1> Definition eines ungerichteten Graphen
 <2> Deklaration einer Kante zwischen _a_ und _b_
+
+Um einen gerichteten Graphen zu beschreiben, verwenden wir das Schlüsselwort _digraph_ und einen Pfeil anstatt der beiden Dashes (vgl. <<Listing2>>).
+
+[#Listing2]
+----
+digraph {
+  a -> b
+}
+----
+
+=== Formen und Farben
+
+DOT bietet ein Vielzahl an Optionen um das Aussehen der Knoten und Kanten anzupassen.
+In dem obigen Beispiel ist der Schlüssel der Knoten auch gleich die Beschriftung.
+Der Knoten _a_ wird auch mit der Beschriftung _a_ angezeigt, da keine andere Beschriftung angegeben wurde.
+Ganz allgemein, werden Knoten in DOT immer über den Schlüssel angesprochen.
+Dem Schlüssel können wir verschiedene Optionen zuweisen, so z.B. auch eine Beschriftung.
+Diese Zuweisung folgt immer dem Schema `knoten [option1=wert1, option2=wert2]`.
+In <<Listing3>> weisen wir dem Knoten a eine etwas längere Beschriftung zu, die auch Zeilenumbrüche enthalten darf.
+Referenziert wird der Knoten weiterhin über den Schlüssel, in diesem Fall _a_.
+
+[#Listing3]
+----
+graph {
+  a [label="Eine etwas längere\n Beschriftung"];
+  a -- b;
+}
+----
+
+Neben der Beschriftung, können wir z.B. auch den Font, die Schriftgröße und -farbe der Beschriftung definieren, oder dem Knoten eine andere Form geben.
+Eine Liste aller möglichen Optionen findet sich in der Dokumentation von Graphviz <<2>>.
+
+Natürlich gibt es, neben der Beschriftung, auch eine Fülle an Darstellungsoptionen für die Kanten.
+So kann man bspw. die Farbe oder Dicke einer Kante festlegen um diese im Graph hervor zu heben (vgl. <<Listing4>>).
+Damit könnte man z.B. den Pfad in einem Graph markieren.
+
+[#Listing4]
+----
+graph {
+  a -- b [penwidth=2, color="red"];
+  b -- c [penwidth=2, color="red"];
+  c -- d [penwidth=2, color="red"];
+  d -- e [penwidth=2, color="red"];
+  c -- a;
+  d -- a;
+  e -- b;
+}
+----
+
+Wenn sich die Formatierung, wie z.B. im Falle des Pfads, wiederholt, gibt es die Möglichkeit die Kanten zusammen zu fassen (vgl. <<Listing5>>).
+
+[#Listing5]
+----
+graph {
+  a -- b -- c -- d -- e [penwidth=2, color="red"];
+  c -- a;
+  d -- a;
+  e -- b;
+}
+----
+
+Wie bereits erwähnt, ist die Gewichtung der Kanten bei einem Netzwerk zwingende Voraussetzung.
+In DOT lässt sich mit dem Schlüsselwort `weight` das Gewicht der Kante festlegen.
+Die Gewichtung findet beim Layout des Graphen Beachtung und beeinflusst die Länge der Kante.
+Der Algorithmus versucht, dass die Kanten mit der höchsten Gewichtung, den kürzesten Weg haben.
+
+Die Entwickler der DOT Sprache haben selbstverständlich auch daran gedacht, eine Formatierung auf viele Knoten anzuwenden.
+Angenommen wir wollen die Form und die Füllfarbe unserer Knoten verändern.
+Anstatt bei jedem einzelnen Knoten die Formatierung zu ändern, können wir mit `node [option1=wert1, option2=wert2, ...]` die Formatierung sämtlicher Knoten in unserem Graph anpassen.
+Analog lässt sich auch die Formatierung sämtlicher Kanten mittel `edge [option=wert]` anpassen (vgl. <<Listing6>>).
+
+[#Listing6]
+----
+graph {
+  node [shape=box, style=filled, fillcolor=lightblue];
+  edge [penwidth=2];
+  a -- b;
+}
+----
+
+Die globalen Werte werden vererbt und lassen sich zu einem späteren Zeitpunkt erweitern.
+Als Beispiel wollen wir uns <<Listing7>> ansehen.
+
+[#Listing7]
+----
+graph {
+  node [shape=box]           <1>
+  html;
+
+  node [style=filled]        <2>
+  head;
+  body;
+
+  node [fillcolor=lightblue] <3>
+  title;
+  meta;
+  h1;
+  p;
+  span;
+
+  html -- head;
+  html -- body;
+  head -- title;
+  head -- meta;
+  body -- h1;
+  body -- p;
+  body -- span;
+}
+----
+<1> Zuerst wird `shape=box` für alle Knoten definiert.
+<2> Zusätzlich zu `shape=box`, gilt für alle Knoten die nach dem Knoten `html` definiert werden noch zusätzlich das Attribut `style=filled`.
+<3> Die Blätter unseres HTML Baums würden wir gerne mit `fillcolor=lightblue` versehen. Dieses und alle bisher genannten Attribute gelten dann für alle Knoten nach `head` und `body`.
+
+=== Records
+Eine spezielle Knotenform, die Records, sollten nicht unerwähnt bleiben.
+Records dienen dazu, die Beschriftung eines Knoten in tabellarischer Form darzustellen.
+Mit dem Schlüsselwort `shape=record` definieren wir einen Knoten als Record.
+Das Label eines Records folgt einem bestimmten Format.
+So werden die verschiedenen Spalten mit einem `|` (Pipe) Zeichen voneinander getrennt.
+Innerhalb einer Spalte kann zwischen der vertikalen und horizontalen Ausrichtung mit geschweiften Klammern gewechselt werden.
+Mit einem gerichteten Graph und Records lassen sich z.B. einfache Klassendiagramme erstellen (vgl. <<Listing8>>).
+
+[#Listing8]
+----
+digraph {
+  rankdir="RL";
+
+  Fahrzeug [shape="box"]
+  Auto [
+    shape="record",
+    label="Auto|+ velocity : int\l|+ accelerate() : void\l"
+    ];
+
+  Fahrrad[
+    shape="record"
+    label="Fahrrad|+ velocity : int\l|+ accelerate() : void\l"
+  ]
+
+  Auto -> Fahrzeug [arrowhead="empty"]
+  Fahrrad -> Fahrzeug [arrowhead="empty"]
+}
+----
+
+=== HTML
+Ein weiteres Gimmick von DOT ist die Formatierung von Knoten mittels HTML Elementen.
+Damit lassen sich z.B. komplexere Strukturen wie Tabellen in den Knoten darstellen (vgl. <<Listing9>>).
+Der Autor hat sich diesen Umstand bereits erfolgreich zu Nutzen gemacht, um Freemarker Templates für verschiedene Knotenarten zu hinterlegen und diese dann entsprechend rendern zu lassen.
+
+[#Listing9]
+----
+graph {
+  a [label=<                                     <1>
+    <table>
+      <tr><td>Das</td><td>ist</td></tr>
+      <tr><td>ziemlich</td><td>cool!</td></tr>
+    </table>
+  >]                                             <2>
+  a -- b;
+  a -- c;
+}
+----
+<1> Ein HTML Label wird mit einer spitzen Klammer initiiert.
+<2> Und eine spitze Klammer am Ende beendet den HTML Code.
+
+Es sollte allerdings erwähnt werden, dass es sich hierbei nur um ein Subset von HTML handelt, das Graphviz für die Formatierung von Knoten unterstützt.
+Für eine vollständige Beschreibung welche HTML Tags unterstützt werden, wird an dieser Stelle auf die Dokumentation verwiesen <<3>>.
+
+Neben der Formatierung, lassen sich Knoten und Kanten auch mit Links versehen, die, ein unterstützendes Ausgabeformat (z.B. PostScript oder SVG) als Voraussetzung, auch angeklickt werden können.
+Wie wir später sehen werden, ist dieses Feature besonders hilfreich, wenn wir eine JavaScript Bibliothek für das Rendering unserer Graphen verwenden.
+
+=== Subgraphen
+Ein weiteres, wichtiges Feature von DOT ist die Unterstützung von Subgraphen.
+Ein Subgraph ist eine Teilmenge von zusammenhängenden Knoten und Kanten, die mit dem Rest des Graphen in Verbindung stehen.
+Ein einfaches Beispiel für einen Subgraphen sehen wir in <<Abb. 5>>.
+Subgraphen werden mit dem Schlüsselwort `subgraph` und dem Präfix `cluster_` eingeleitet.
+Außerdem können Subgraphen, wie Knoten und Kanten auch, mit dem Attribut `label` beschriftet werden.
+Die obige Abbildung wird bspw. über eine Beschreibung wie in <<Listing10>> erzeugt.
+
+[#Listing10]
+----
+graph {
+  subgraph cluster_0 {
+    label="Kindsknoten";
+    b;
+    c;
+    b -- c;
+  }
+  a -- b;
+  a -- c;
+}
+----
+
+=== Layout
+Um das Layout für unsere Graphen automatisch zu erzeugen, führt Graphviz das Konzept der Ränge (ranks) ein.
+Jeder Knoten erhält einen höheren Rang, als der höchstrangige Knoten der auf diesen Knoten zeigt.
+Bisher haben wir alle unsere Knoten von oben nach unten ausgerichtet.
+Das ist die Standardausrichtung die Graphviz verwendet, wenn nichts explizit angegeben wurde.
+Je tiefer der Knoten, desto höher ist dessen Rang bei dieser Ausrichtung.
+Mit dem Schlüsselwort `rankdir` können wir unseren Graphen bspw. von links nach rechts ausrichten.
+Der Rang der Knoten erhöht sich hier also horizontal, von links nach rechts.
+Das Prinzip lässt sich am besten anhand eines Beispiels veranschaulichen (vgl. <<Listing11>>).
+
+[#Listing11]
+----
+digraph {
+  rankdir="LR";
+  A -> B;       <1>
+  A -> C;       <2>
+  B -> C;
+  C -> D;       <3>
+}
+----
+<1> _A_ ist der Wurzelknoten, also hat _A_ den Rang 1; _A_ zeigt außerdem auf _B_, damit erhält _B_ den Rang 2.
+<2> Sowohl _A_ als auch _B_ zeigen beide auf _C_, also erhält _C_ einen höheren Rang als _B_.
+<3> _C_ zeigt auf _D_, deshalb erhält _D_ einen höheren Rang als _C_.
+
+Eine der grundlegenden Mechanismen um auf das Layout Einfluß zu nehmen, besteht in der Manipulation der Rangfolge.
+Angenommen wir wollten bei dem obigen Beispiel, die Knoten _B_ und _C_ auf einer Ebene darstellen.
+Dazu bietet uns Graphviz die Möglichkeit mit dem Schlüsselwort `rank` unsere Knoten in einem Rang zu gruppieren (vgl. <<Listing12>>).
+
+[#Listing12]
+----
+digraph {
+  rankdir="LR";
+  A -> B -> C -> D;
+  A -> C;
+
+  {rank=same B C};
+}
+----
+
+Trotz verschiedenster Tricks und Kniffe, kann es allerdings sein, dass das Layout, das uns Graphviz erzeugt nicht unseren Vorstellungen entspricht.
+Das ist die Kehrseite der Medaille bei einem algorithmisch generierten Layout.
+
+Neben den Einstellungen zum Layout, könnte auch ein anderer Layout Algorithmus Abhilfe schaffen.
+Graphviz kommt mit einer Handvoll Layout Algorithmen, die jeweils für eine bestimmte Art von Graph optimiert sind.
+Der am häufigsten verwendete Algorithmus ist der _dot_ Algorithmus, die sich gut für gerichtete, azyklische Graphen eignet.
+Es gibt noch Algorithmen für ungerichtete Graphen, die die Knoten z.B. konzentrisch anordnen (`circo`), oder spiralförmig (`twopi`).
+Da der Rahmen dieses Artikels mit der genauen Betrachtung jedes einzelnen Algorithmus gesprengt würde, wird der Leser hier auf die Manpage von Graphviz (`man dot`) verwiesen.
+
+Wenn wir immer noch Probleme mit dem Layout haben, sollten wir uns fragen, ob DOT wirklich das richtige Tool für diesen Graph ist.
+Es ist keine Schande, auch mal einen Graphen von Hand zu malen.
+
+== Rendering
+Eine der Stärken der DOT Sprache ist das einfache Textformat, mit dem die Graphen beschrieben werden.
+Durch die Trennung von Beschreibung und Darstellung, lässt sich ein Graph ganz einfach im Programmfluß generieren.
+Letztendlich handelt es sich um einen String, der in einem bestimmten Format erzeugt wird und hinterher in den Logs, oder auch in einer Datenbanktabelle abgelegt werden kann.
+Zu einem späteren Zeitpunkt, kann man den Graph dann rendern lassen um sich bspw. eine komplexe Datenstruktur zum jeweiligen Zeitpunkt anzusehen.
+
+Neben diesem manuellen Prozess, lässt sich DOT mit Hilfe von verschiedenen JavaScript Bibliotheken aber auch in die eigene Webanwendung einbetten und die Graphen können zur Laufzeit gerendert werden.
+
+=== Command-Line
+Wenn wir einen Graphen beschrieben und als Textdatei gespeichert haben (z.B. eines der obigen Beispiele), können wir mit dem `dot` Befehl verschiedene Ausgabeformate daraus erzeugen, z.B.
+
+* PostScript (und daraus dann PDF)
+* SVG (skalierbare Vektorgrafik für das Web)
+* Xfig Format
+* PNG
+* GIF
+* und sogar server- und clientseitige Imagemaps.
+
+Mittels
+
+ dot -Tpng -odot.png dot.txt
+
+erzeugen wir aus der Beschreibung unseres Graphen in dot.txt bspw. eine Bilddatei im PNG Format.
+
+=== viz.js
+Bei dieser JavaScript Bibliothek handelt es sich um ein lauffähiges Graphviz, welches mittels Emscripten in Webassembly cross kompiliert wurde.
+Was auf den ersten Blick ziemlich wild aussieht, ist überraschend einfach in der Benutzung.
+Viz.js <<4>> ist in zwei verschiedenen Dateien aufgeteilt.
+Zum einen finden wir die eigentliche API in der `viz.js` Datei.
+Außerdem gibt es noch die beiden Dateien `full.render.js` und `lite.render.js`.
+Die _full_ Rendering Datei beinhaltet neben der Möglichkeit der HTML Labels, noch einige der weniger gebräuchlichen Rendering Engines, auf die oben kurz eingegangen wurde.
+
+Viz.js kann auf zwei Arten eingebunden werden.
+Zum einen als Web Worker, bei dem der Browser das Rendering des Graphen im Hintergrund erledigt (vgl. <<Listing13>>).
+
+[#Listing13]
+[source,javascript]
+----
+const workerURL = 'path/to/full.render.js';
+let viz = new Viz({ workerURL });
+----
+
+Oder die Dateien werden einfach mit dem _<script>_ Tag eingebunden (vgl. <<Listing14>>).
+Aber hier ist Vorsicht geboten, denn die Dateien für das Rendering sind recht groß (>1MB).
+
+[#Listing14]
+[source,html]
+----
+<script src="viz.js"></script>
+<script src="full.render.js"></script>
+----
+
+Die Viz.js API bietet verschiedene Funktionen an, um unseren Graphen in unterschiedlichen Ausgabeformaten zu rendern.
+Ein sehr gebräuchliches Format, das von den meisten modernen Browsern unterstützt wird, ist das Vektorgrafikformat SVG.
+Neben den offensichtlichen Vorteilen von Vektorgrafiken, dass diese ohne Qualitätsverlust hoch- und runterskaliert werden können, ist es möglich Knoten und Kanten mit HTML Links zu versehen.
+Gerade bei einer Webanwendung bietet das die Möglichkeit für den Benutzer mit dem Graph zu interagieren.
+
+Die Funktion `renderSVGElement` liefert ein `Promise` Objekt zurück, worauf mit `then` im Erfolgsfall und `catch` im Fehlerfall reagiert werden kann (vgl. <<Listing15>>).
+Die Variable `element` beinhaltet das gerenderte SVG, das im Erfolgsfall z.B. in ein div gepackt werden kann.
+
+[#Listing15]
+[source,javascript]
+----
+var viz = new Viz(); // or using webworker new Viz({ workerURL })
+
+viz.renderSVGElement('digraph { a -> b }')
+  .then(function(element) {
+    document.body.appendChild(element);
+    })
+  .catch(error => {
+   // Create a new Viz instance (@see Caveats page for more info)
+   viz = new Viz();
+
+   // Possibly display the error
+   console.error(error);
+});
+----
+
+TIP: Da es sich bei dem Ausgabeformat um reines SVG handelt, können auch weitere Bibliotheken eingebunden werden, um bspw. ein Zoom einzubauen (siehe <<5>>).
+
+
+=== D3
+Bei d3-graphviz <<6>> handelt es sich um eine Erweiterung von D3, die mit Hilfe von viz.js ebenfalls in der Lage ist DOT Graphen zu rendern.
+Neben dem reinen Rendering, kann d3-graphviz allerdings auch Übergänge im Graph als Animationen darstellen.
+Das Prinzip ist recht einfach.
+Es werden zwei Graphen gerendert und D3 ist, anhand der resultierenden SVG Grafik, in der Lage zu ermitteln, welche Knoten und Kanten hinzugekommen oder entfernt wurden.
+Die Veränderung kann daraufhin als Animation dargestellt werden.
+
+Außerdem bietet D3 die Möglichkeit den Graph on-the-fly zu verändern.
+Es können Attribute angepasst werden, neue Knoten oder Kanten hinzugefügt oder vorhandene gelöscht werden.
+Wir können dem Benutzer dadurch eine Interaktion mit dem Graph ermöglichen und ganz neue Usecases abbilden.
+
+== Weitere Tools
+Es gibt zahlreiche Tools, die auf DOT und Graphviz aufsetzen um ihre Funktionalität zur Verfügung zu stellen.
+Wir wollen uns einige davon ansehen, die gerade im Java Umfeld sehr verbreitet sind.
+
+=== PlantUML
+Mit PlantUML <<7>> lassen sich UML Diagramme in einem Textformat beschreiben.
+Gerade im Hinblick auf agile Architekturdokumentation, findet dieses Werkzeug eine immer größere Anhängerschaft.
+Die Diagramme können, zusammen mit dem Quelltext in dem Versionskontrollsystem gepackt werden.
+Durch das Textformat können somit verschiedene Stände miteinander verglichen, oder sogar zusammengeführt (gemergt) werden.
+
+=== Maven Dependency Plugin
+Das Maven Dependency Plugin sollte jedem Java Entwickler ein Begriff sein.
+Das Plugin besitzt eine Funktion, mit der die Abhängigkeiten eines Maven Moduls als DOT Graph generiert werden können.
+Dieser Mechanismus ist sehr praktisch, gerade wenn es um automatische Dokumentation, bspw. während des CI geht.
+
+Mit
+
+ mvn dependency:tree -Dincludes=com.example -DappendOutput=true -DoutputType=dot -DoutputFile=/path/to/output.gv
+
+werden alle Abhängigkeiten von `com.example` in einem Graph angezeigt und in die Datei output.gv geschrieben.
+
+=== JDeps
+Seit dem JDK 9 kommt Java jetzt auch mit einem nativen Modulsystem, Jigsaw.
+Ein Tool, das seitdem mitgeliefert wird ist `jdeps`.
+JDeps kann Abhängigkeiten zwischen Java Modulen als DOT Graph anzeigen.
+
+Mit
+
+ jdeps -dotoutput <dir> <classes/package>
+
+werden alle Abhängigkeiten zu anderen Java Modulen als Graph dargestellt.
+
+== Fazit
+Der Leser hat ein Werkzeug kennen gelernt, mit dem Datenstrukturen als Graphen visualisiert werden können.
+Durch die Trennung von Beschreibung und Layout, ergeben sich zahlreiche Anwendungsfälle für DOT, von der Ausgabe in den Logs, bis hin zur vollständigen Webanwendung mit viz.js.
+Da es eine Fülle an verschiedenen Optionen gibt, um die Darstellung der Knoten und Kanten anzupassen, konnten wir in diesem Artikel nur auf die Grundlagen eingehen.
+Der Leser sei hier auf die sehr gute und umfangreiche Dokumentation von Graphviz verwiesen.
+
+Aber natürlich gibt es auch Fälle, in denen DOT nicht das geeignete Werkzeug ist.
+Gerade wenn es darum geht, komplexe Layoutingansprüche umzusetzen, kann Graphviz recht widerspenstig sein.
+In diesem Fall sollten man nicht versuchen DOT und Graphviz auf seinen Anwendungsfall umzubiegen, sondern stattdessen lieber den manuellen Ansatz bevorzugen.
+
+
+[#1]
+[1] https://en.wikipedia.org/wiki/Unix_philosophy
+[#2]
+[2] https://graphviz.gitlab.io/_pages/doc/info/attrs.html
+[#3]
+[3] https://graphviz.gitlab.io/_pages/doc/info/shapes.html#html
+[#4]
+[4] https://github.com/mdaines/viz.js
+[#5]
+[5] https://github.com/ariutta/svg-pan-zoom
+[#6]
+[6] https://github.com/magjac/d3-graphviz

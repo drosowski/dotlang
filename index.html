@@ -47,7 +47,8 @@
 				padding: 10px;
 				text-align: center;
 				margin: 0 auto;
-				border:1px solid black;
+			border:1px solid black;
+			background-color: white;
 			}
 			div.graph.small {
 				width: 30vw;
@@ -59,10 +60,10 @@
 			}
 			svg {
 				display: inline;
-				width: inherit;
+				width: 100%;
 				min-width: inherit;
 				max-width: inherit;
-				height: inherit;
+				height: 100%;
 				min-height: inherit;
 			        max-height: inherit;
 			}
@@ -76,34 +77,16 @@
 			<div class="slides">
 
 				<section>
-					<div id="intro"></div>
+					<div id="intro"><img src="img/intro.png" style="border: 0"/></div>
 					<span>Datenstrukturen visualisieren mit der DOT Sprache</span>
-					<script>
-					renderDot('intro',`
-						digraph {
-						    bgcolor="#ffffff00";
-						    Ein [style=filled,fillcolor=lightblue];
-						    Bild [style=filled,fillcolor=lightgrey];
-						    Ein -> Bild;
-						    Bild -> sagt;
-						    sagt -> mehr;
-						    mehr -> als;
-						    tausend [style=filled,fillcolor=lightyellow];
-						    Worte [style=filled,fillcolor=green];
-						    als -> tausend;
-						    tausend -> Worte;
-						    Worte -> Bild;
-						}
-						`, 'circo');
-					</script>
 				</section>
 
 
 				<section>
 				  <pre><code data-trim data-noescape>$ whoami</code></pre>
 				  <div style="float: left; margin-left: 50px;">
-				    <img src="img/me.jpg" style="width: 25vw;"/><br/>
-				    <img src="img/bielefeld.png" style="width: 25vw; border: 0;"/>
+				    <img src="img/me.jpg" style="width: 15vw;"/><br/>
+				    <img src="img/bielefeld.png" style="width: 15vw; border: 0;"/>
 				  </div>
 				  <table border="0">
 				    <tr><td>Daniel Rosowski</td></tr>

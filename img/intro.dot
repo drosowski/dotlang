@@ -1,0 +1,14 @@
+						digraph {
+						    bgcolor="#ffffff00";
+						    Ein [style=filled,fillcolor=lightblue];
+						    Bild [style=filled,fillcolor=lightgrey];
+						    Ein -> Bild;
+						    Bild -> sagt;
+						    sagt -> mehr;
+						    mehr -> als;
+						    tausend [style=filled,fillcolor=lightyellow];
+						    Worte [style=filled,fillcolor=green];
+						    als -> tausend;
+						    tausend -> Worte;
+						    Worte -> Bild;
+						}

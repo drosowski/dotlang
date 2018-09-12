@@ -1,0 +1,7 @@
+graph {
+  subgraph cluster_0 {
+    label="Kindsknoten";
+    b -- c;
+  }
+  a -- {b c};
+}

@@ -1,10 +1,49 @@
-==== Vortrag
+=== Vortrag
 
 * Slides
 
-* Syntax Live zeigen
+=== Syntax Live zeigen
 
-graph html {
+ graph {
+  a -- b;
+ }
+
+* Einfachster Graph, Kurzform für:
+
+ graph {
+  a;
+  b;
+  a -- b;
+ }
+
+* Einzelne Knoten lassen sich mit Attributen versehen
+
+ graph {
+  a [label="Dies ist a", shape=box];
+  b [shape=box];
+  c;
+  a -- b;
+  b -- c;
+  a -- c;
+ }
+
+* Globale Attribute mit node oder edge, node [shape=box]
+
+ graph {
+  node [shape=box];
+  a [label="Dies ist a"];
+  b;
+  c;
+  a -- b -- c [color=blue];
+  a -- c [label="a zu c"];
+ }
+
+* Rank erklären, b und c rank=same
+* rankdir
+
+* Vererbung von node Attributen
+
+ graph html {
   html;
   head;
   body;
@@ -15,13 +54,17 @@ graph html {
   body -- h1;
   body -- p;
   body -- span;
-}
+ }
 
-digraph fsm {
+* Records
+* html [label=<<table><tr><td>KEY</td><td>VALUE</td></tr><tr><td>Hallo</td><td>Welt</td></tr></table>>];
+* Subgraphs
+* Gerichtete Graphen
+
+ digraph fsm {
   node [shape=doublecircle];
   start;
   stop;
-
   node [shape=circle];
   start -> step1 [label="new"];
   step1 -> step2 [label="first step"];
@@ -30,29 +73,31 @@ digraph fsm {
   step2 -> step3;
   step3 -> step1 [label="back to start"];
   step3 -> stop [label="finished"];
-}
+ }
 
-* DESIGN
-* bgcolor="#ffffff00" (transparent)
-* label
-* fontname/fontcolor
-* image (hat nicht funktioniert)
-* width/height/fixedsize
-* shape/style
-* fillcolor
-* globale node/edge styles
-* grouping / subgraphs
-* records
-* HTML
-  html [label=<<table><tr><td>KEY</td><td>VALUE</td></tr><tr><td>Hallo</td><td>Welt</td></tr></table>>];
+ digraph {
+  rankdir="RL";
+  Fahrzeug [shape="box"]
+  Auto [
+    shape="record",
+    label="Auto|+ velocity : int\l|+ accelerate() : void\l"
+   ];
+  Fahrrad[
+    shape="record"
+    label="Fahrrad|+ velocity : int\l|+ accelerate() : void\l"
+   ];
 
-* LAYOUT
-* rankdir
-* rank
-* ranksep
+  Auto -> Fahrzeug [arrowhead="empty"]
+  Fahrrad -> Fahrzeug [arrowhead="empty"]
+ }
 
-
-* webviz zeigen
+=== Webviz zeigen
+* Les Miserables
+** GmlRenderer
+** viz.js
+* Taxtree
+** TaxTreeRenderer
+** Freemarker Templates
 * Java Datenstrukturen
 ** Strings
 ** Arrays, mit Objekten und Primitives
@@ -60,9 +105,10 @@ digraph fsm {
 ** LinkedList
 ** HashMap
 ** TreeMap
-* Les Miserables
-** GmlRenderer
-** viz.js
-* Taxtree
-** TaxTreeRenderer
-** Freemarker Templates
+
+
+=== Maven Deps und jdeps Demo
+
+ mvn dependency:tree -DappendOutput=true -DoutputType=dot -DoutputFile=target/mavendeps.gv
+
+ jdeps -dotoutput dot -apionly intellivat-engine-0.6.2.28-runnable.jar

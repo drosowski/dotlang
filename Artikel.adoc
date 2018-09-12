@@ -67,17 +67,22 @@ Damit hätten wir auch schon alles, was wir an Theorie benötigen, um unsere ers
 Kommen wir als nächstes zur Syntax, oder zur Grammatik der DOT Sprache.
 Der dümmste anzunehmende Graph besteht aus zwei Knoten und einer verbindenden Kante und ist ungerichtet (vgl. <<Listing1>>).
 
-TIP: Um die hier angegebenen Beispiele live nachvollziehen zu können, kann *viz-js.com* verwendet werden.
+TIP: Um die hier angegebenen Beispiele nachvollziehen zu können, kann *viz-js.com* verwendet werden, um die Graphen live im Browser zu rendern.
 
 [#Listing1]
 ----
 graph {  <1>
-  a -- b <2>
+  a;     <2>
+  b;
+  a -- b <3>
 }
 ----
-<1> Definition eines ungerichteten Graphen
-<2> Deklaration einer Kante zwischen _a_ und _b_
+<1> Definition eines ungerichteten Graphen.
+<2> Deklaration der Knoten;
+<3> Definition einer Kante zwischen _a_ und _b_.
 
+Knoten werden mit einem Schlüssel deklariert, der dann auch bei der Definition einer Kante verwendet wird.
+Die Deklaration der Knoten ist optional, wenn dem Knoten keine Attribute zugewiesen sind (mehr dazu später).
 Um einen gerichteten Graphen zu beschreiben, verwenden wir das Schlüsselwort _digraph_ und einen Pfeil anstatt der beiden Dashes (vgl. <<Listing2>>).
 
 [#Listing2]
@@ -89,13 +94,12 @@ digraph {
 
 === Formen und Farben
 
-DOT bietet ein Vielzahl an Optionen um das Aussehen der Knoten und Kanten anzupassen.
-In dem obigen Beispiel ist der Schlüssel der Knoten auch gleich die Beschriftung.
-Der Knoten _a_ wird auch mit der Beschriftung _a_ angezeigt, da keine andere Beschriftung angegeben wurde.
-Ganz allgemein, werden Knoten in DOT immer über den Schlüssel angesprochen.
-Dem Schlüssel können wir verschiedene Optionen zuweisen, so z.B. auch eine Beschriftung.
-Diese Zuweisung folgt immer dem Schema `knoten [option1=wert1, option2=wert2]`.
-In <<Listing3>> weisen wir dem Knoten a eine etwas längere Beschriftung zu, die auch Zeilenumbrüche enthalten darf.
+DOT bietet eine Vielzahl an Attributen um das Aussehen der Knoten und Kanten anzupassen.
+Ein sehr gebräuchliches Attribut ist z.B. die Beschriftung eines Knotens.
+Im obigen Beispiel wird der Knoten _a_ auch mit der Beschriftung _a_ angezeigt, da keine andere Beschriftung angegeben wurde.
+Dem Knoten können wir bei der Deklaration verschiedene Attribute zuweisen, so z.B. auch eine Beschriftung.
+Diese Zuweisung folgt immer dem Schema `knoten [attribute1=wert1, attribut2=wert2]`.
+In <<Listing3>> weisen wir dem Knoten _a_ eine etwas längere Beschriftung zu, die auch Zeilenumbrüche enthalten darf.
 Referenziert wird der Knoten weiterhin über den Schlüssel, in diesem Fall _a_.
 
 [#Listing3]
@@ -107,7 +111,7 @@ graph {
 ----
 
 Neben der Beschriftung, können wir z.B. auch den Font, die Schriftgröße und -farbe der Beschriftung definieren, oder dem Knoten eine andere Form geben.
-Eine Liste aller möglichen Optionen findet sich in der Dokumentation von Graphviz <<2>>.
+Eine Liste aller möglichen Attribute findet sich in der Dokumentation von Graphviz <<2>>.
 
 Natürlich gibt es, neben der Beschriftung, auch eine Fülle an Darstellungsoptionen für die Kanten.
 So kann man bspw. die Farbe oder Dicke einer Kante festlegen um diese im Graph hervor zu heben (vgl. <<Listing4>>).
@@ -126,7 +130,7 @@ graph {
 }
 ----
 
-Wenn sich die Formatierung, wie z.B. im Falle des Pfads, wiederholt, gibt es die Möglichkeit die Kanten zusammen zu fassen (vgl. <<Listing5>>).
+Das obige Beispiel ließe sich auch in einer vereinfachten Notation beschreiben, in der wir die Kanten einfach hintereinander definieren (vgl. <<Listing5>>).
 
 [#Listing5]
 ----
@@ -145,8 +149,8 @@ Der Algorithmus versucht, dass die Kanten mit der höchsten Gewichtung, den kür
 
 Die Entwickler der DOT Sprache haben selbstverständlich auch daran gedacht, eine Formatierung auf viele Knoten anzuwenden.
 Angenommen wir wollen die Form und die Füllfarbe unserer Knoten verändern.
-Anstatt bei jedem einzelnen Knoten die Formatierung zu ändern, können wir mit `node [option1=wert1, option2=wert2, ...]` die Formatierung sämtlicher Knoten in unserem Graph anpassen.
-Analog lässt sich auch die Formatierung sämtlicher Kanten mittel `edge [option=wert]` anpassen (vgl. <<Listing6>>).
+Anstatt bei jedem einzelnen Knoten die Formatierung zu ändern, können wir mit `node [attribut1=wert1, attribut2=wert2, ...]` die Formatierung sämtlicher Knoten in unserem Graph anpassen.
+Analog lässt sich auch die Formatierung sämtlicher Kanten mittel `edge [attribut=wert]` anpassen (vgl. <<Listing6>>).
 
 [#Listing6]
 ----
@@ -187,11 +191,11 @@ graph {
 }
 ----
 <1> Zuerst wird `shape=box` für alle Knoten definiert.
-<2> Zusätzlich zu `shape=box`, gilt für alle Knoten die nach dem Knoten `html` definiert werden noch zusätzlich das Attribut `style=filled`.
+<2> Zusätzlich zu `shape=box`, gilt für alle Knoten die nach dem Knoten `html` definiert werden, noch zusätzlich das Attribut `style=filled`.
 <3> Die Blätter unseres HTML Baums würden wir gerne mit `fillcolor=lightblue` versehen. Dieses und alle bisher genannten Attribute gelten dann für alle Knoten nach `head` und `body`.
 
 === Records
-Eine spezielle Knotenform, die Records, sollten nicht unerwähnt bleiben.
+Eine spezielle Knotenform, der Record, sollte nicht unerwähnt bleiben.
 Records dienen dazu, die Beschriftung eines Knoten in tabellarischer Form darzustellen.
 Mit dem Schlüsselwort `shape=record` definieren wir einen Knoten als Record.
 Das Label eines Records folgt einem bestimmten Format.
@@ -241,31 +245,46 @@ graph {
 <1> Ein HTML Label wird mit einer spitzen Klammer initiiert.
 <2> Und eine spitze Klammer am Ende beendet den HTML Code.
 
-Es sollte allerdings erwähnt werden, dass es sich hierbei nur um ein Subset von HTML handelt, das Graphviz für die Formatierung von Knoten unterstützt.
+Es sollte allerdings erwähnt werden, dass es sich hierbei nur um eine Teilmenge von HTML handelt, das Graphviz für die Formatierung von Knoten unterstützt.
 Für eine vollständige Beschreibung welche HTML Tags unterstützt werden, wird an dieser Stelle auf die Dokumentation verwiesen <<3>>.
 
-Neben der Formatierung, lassen sich Knoten und Kanten auch mit Links versehen, die, ein unterstützendes Ausgabeformat (z.B. PostScript oder SVG) als Voraussetzung, auch angeklickt werden können.
-Wie wir später sehen werden, ist dieses Feature besonders hilfreich, wenn wir eine JavaScript Bibliothek für das Rendering unserer Graphen verwenden.
+Neben der Formatierung, lassen sich Knoten und Kanten auch mit Links versehen, die, ein unterstützendes Ausgabeformat (z.B. PostScript oder SVG) vorausgesetzt, auch angeklickt werden können.
+Wie wir später sehen, ist dieses Feature besonders hilfreich, wenn wir eine JavaScript Bibliothek für das Rendering unserer Graphen verwenden.
 
 === Subgraphen
 Ein weiteres, wichtiges Feature von DOT ist die Unterstützung von Subgraphen.
-Ein Subgraph ist eine Teilmenge von zusammenhängenden Knoten und Kanten, die mit dem Rest des Graphen in Verbindung stehen.
-Ein einfaches Beispiel für einen Subgraphen sehen wir in <<Abb. 5>>.
-Subgraphen werden mit dem Schlüsselwort `subgraph` und dem Präfix `cluster_` eingeleitet.
-Außerdem können Subgraphen, wie Knoten und Kanten auch, mit dem Attribut `label` beschriftet werden.
-Die obige Abbildung wird bspw. über eine Beschreibung wie in <<Listing10>> erzeugt.
+Subgraphen erfüllen drei Funktionen in DOT.
+Zunächst dienen sie der semantischen Gruppierung von Knoten und Kanten die in einem logischen Zusammenhang stehen.
+Ein Subgraph wird mit geschweiften Klammern initiiert und kann nebenbei auch dazu verwendet werden, um Kanten zusammen zu fassen.
+In <<Listing10>> sehen wir den anonymen Subgraph bestehend aus _b_ und _c_.
+Durch die verkürzte Schreibweise können wir für _a_ jeweils eine Kante zu _b_ und _c_ anlegen.
 
 [#Listing10]
 ----
 graph {
+  a -- {b c};
+}
+----
+
+Außerdem dienen Subgraphen auch als Kontext für Attribute.
+Wir können bspw. alle Knoten eines Subgraphen, mittels `node [shape=box]` als Kasten darstellen.
+In dieser Funktion treffen wir den Subgraphen später noch an, wenn es um das Thema Layout geht.
+
+[#Abb5]
+image::abb5.png[]
+
+Subgraphen die mit dem Schlüsselwort `subgraph` und dem Präfix `cluster` beginnen, werden mit einem Kasten umrandet dargestellt (siehe <<Abb5>>).
+Außerdem können diese speziellen Subgraphen mit dem Attribut `label` beschriftet werden.
+Die obige Abbildung wird bspw. über eine Beschreibung wie in <<Listing11>> erzeugt.
+
+[#Listing11]
+----
+graph {
   subgraph cluster_0 {
     label="Kindsknoten";
-    b;
-    c;
     b -- c;
   }
-  a -- b;
-  a -- c;
+  a -- {b c};
 }
 ----
 
@@ -277,9 +296,9 @@ Das ist die Standardausrichtung die Graphviz verwendet, wenn nichts explizit ang
 Je tiefer der Knoten, desto höher ist dessen Rang bei dieser Ausrichtung.
 Mit dem Schlüsselwort `rankdir` können wir unseren Graphen bspw. von links nach rechts ausrichten.
 Der Rang der Knoten erhöht sich hier also horizontal, von links nach rechts.
-Das Prinzip lässt sich am besten anhand eines Beispiels veranschaulichen (vgl. <<Listing11>>).
+Das Prinzip lässt sich am besten anhand eines Beispiels veranschaulichen (vgl. <<Listing12>>).
 
-[#Listing11]
+[#Listing12]
 ----
 digraph {
   rankdir="LR";
@@ -295,9 +314,9 @@ digraph {
 
 Eine der grundlegenden Mechanismen um auf das Layout Einfluß zu nehmen, besteht in der Manipulation der Rangfolge.
 Angenommen wir wollten bei dem obigen Beispiel, die Knoten _B_ und _C_ auf einer Ebene darstellen.
-Dazu bietet uns Graphviz die Möglichkeit mit dem Schlüsselwort `rank` unsere Knoten in einem Rang zu gruppieren (vgl. <<Listing12>>).
+Dazu bietet uns Graphviz die Möglichkeit unsere Knoten in einem Subgraph mit dem Schlüsselwort `rank=same` in einem Rang zu gruppieren (vgl. <<Listing13>>).
 
-[#Listing12]
+[#Listing13]
 ----
 digraph {
   rankdir="LR";
@@ -308,12 +327,11 @@ digraph {
 }
 ----
 
-Trotz verschiedenster Tricks und Kniffe, kann es allerdings sein, dass das Layout, das uns Graphviz erzeugt nicht unseren Vorstellungen entspricht.
-Das ist die Kehrseite der Medaille bei einem algorithmisch generierten Layout.
+Die Kehrseite der Medaille eines algorithmisch generierten Layout ist allerdings, dass das mit Graphiz erstellte Layout, trotz aller Tricks und Kniffe von unseren Vorstellungen abweichen kann.
 
 Neben den Einstellungen zum Layout, könnte auch ein anderer Layout Algorithmus Abhilfe schaffen.
-Graphviz kommt mit einer Handvoll Layout Algorithmen, die jeweils für eine bestimmte Art von Graph optimiert sind.
-Der am häufigsten verwendete Algorithmus ist der _dot_ Algorithmus, die sich gut für gerichtete, azyklische Graphen eignet.
+Graphviz kommt mit einer Handvoll Layout Algorithmen (oder Engines), die jeweils für eine bestimmte Art von Graph optimiert sind.
+Der am häufigsten verwendete Algorithmus ist der `dot` Algorithmus, die sich gut für gerichtete, azyklische Graphen eignet.
 Es gibt noch Algorithmen für ungerichtete Graphen, die die Knoten z.B. konzentrisch anordnen (`circo`), oder spiralförmig (`twopi`).
 Da der Rahmen dieses Artikels mit der genauen Betrachtung jedes einzelnen Algorithmus gesprengt würde, wird der Leser hier auf die Manpage von Graphviz (`man dot`) verwiesen.
 
@@ -326,7 +344,7 @@ Durch die Trennung von Beschreibung und Darstellung, lässt sich ein Graph ganz 
 Letztendlich handelt es sich um einen String, der in einem bestimmten Format erzeugt wird und hinterher in den Logs, oder auch in einer Datenbanktabelle abgelegt werden kann.
 Zu einem späteren Zeitpunkt, kann man den Graph dann rendern lassen um sich bspw. eine komplexe Datenstruktur zum jeweiligen Zeitpunkt anzusehen.
 
-Neben diesem manuellen Prozess, lässt sich DOT mit Hilfe von verschiedenen JavaScript Bibliotheken aber auch in die eigene Webanwendung einbetten und die Graphen können zur Laufzeit gerendert werden.
+Neben diesem manuellen Prozess, lässt sich DOT mit Hilfe von verschiedenen JavaScript Bibliotheken, eingebettet in eine Webanwendung, zur Laufzeit rendern.
 
 === Command-Line
 Wenn wir einen Graphen beschrieben und als Textdatei gespeichert haben (z.B. eines der obigen Beispiele), können wir mit dem `dot` Befehl verschiedene Ausgabeformate daraus erzeugen, z.B.
@@ -353,19 +371,19 @@ Außerdem gibt es noch die beiden Dateien `full.render.js` und `lite.render.js`.
 Die _full_ Rendering Datei beinhaltet neben der Möglichkeit der HTML Labels, noch einige der weniger gebräuchlichen Rendering Engines, auf die oben kurz eingegangen wurde.
 
 Viz.js kann auf zwei Arten eingebunden werden.
-Zum einen als Web Worker, bei dem der Browser das Rendering des Graphen im Hintergrund erledigt (vgl. <<Listing13>>).
+Zum einen als Web Worker, bei dem der Browser das Rendering des Graphen im Hintergrund erledigt (vgl. <<Listing14>>).
 
-[#Listing13]
+[#Listing14]
 [source,javascript]
 ----
 const workerURL = 'path/to/full.render.js';
 let viz = new Viz({ workerURL });
 ----
 
-Oder die Dateien werden einfach mit dem _<script>_ Tag eingebunden (vgl. <<Listing14>>).
+Oder die Dateien werden einfach mit dem _<script>_ Tag eingebunden (vgl. <<Listing15>>).
 Aber hier ist Vorsicht geboten, denn die Dateien für das Rendering sind recht groß (>1MB).
 
-[#Listing14]
+[#Listing15]
 [source,html]
 ----
 <script src="viz.js"></script>
@@ -374,13 +392,13 @@ Aber hier ist Vorsicht geboten, denn die Dateien für das Rendering sind recht g
 
 Die Viz.js API bietet verschiedene Funktionen an, um unseren Graphen in unterschiedlichen Ausgabeformaten zu rendern.
 Ein sehr gebräuchliches Format, das von den meisten modernen Browsern unterstützt wird, ist das Vektorgrafikformat SVG.
-Neben den offensichtlichen Vorteilen von Vektorgrafiken, dass diese ohne Qualitätsverlust hoch- und runterskaliert werden können, ist es möglich Knoten und Kanten mit HTML Links zu versehen.
+Neben den offensichtlichen Vorteilen von Vektorgrafiken, dass diese ohne Qualitätsverlust skaliert werden können, ist es möglich Knoten und Kanten mit HTML Links zu versehen.
 Gerade bei einer Webanwendung bietet das die Möglichkeit für den Benutzer mit dem Graph zu interagieren.
 
-Die Funktion `renderSVGElement` liefert ein `Promise` Objekt zurück, worauf mit `then` im Erfolgsfall und `catch` im Fehlerfall reagiert werden kann (vgl. <<Listing15>>).
+Die Funktion `renderSVGElement` liefert ein `Promise` Objekt zurück, worauf mit `then` im Erfolgsfall und `catch` im Fehlerfall reagiert werden kann (vgl. <<Listing16>>).
 Die Variable `element` beinhaltet das gerenderte SVG, das im Erfolgsfall z.B. in ein div gepackt werden kann.
 
-[#Listing15]
+[#Listing16]
 [source,javascript]
 ----
 var viz = new Viz(); // or using webworker new Viz({ workerURL })

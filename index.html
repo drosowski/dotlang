@@ -79,6 +79,14 @@
 				<section>
 					<div id="intro"><img src="img/intro.png" style="border: 0"/></div>
 					<span>Datenstrukturen visualisieren mit der DOT Sprache</span>
+					<aside class="notes">
+					  <ul>
+					    <li>Letzten Jahre erfolgreich eingesetzt</li>
+					    <li>Hierarchische Verarbeitungsprofile</li>
+					    <li>Personennetzwerk</li>
+					  </ul>
+				    </aside>
+
 				</section>
 
 
@@ -318,7 +326,7 @@
 									digraph {
 										a -> b;
 										b -> c;
-										c -> d;
+										c -> d [constraint=false];
 										b -> d;
 									}`
 								);

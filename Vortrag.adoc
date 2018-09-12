@@ -8,7 +8,7 @@
   a -- b;
  }
 
-* Einfachster Graph, Kurzform für:
+Einfachster Graph, Kurzform für:
 
  graph {
   a;
@@ -16,7 +16,7 @@
   a -- b;
  }
 
-* Einzelne Knoten lassen sich mit Attributen versehen
+Einzelne Knoten lassen sich mit Attributen versehen
 
  graph {
   a [label="Dies ist a", shape=box];
@@ -27,7 +27,7 @@
   a -- c;
  }
 
-* Globale Attribute mit node oder edge, node [shape=box]
+Globale Attribute mit node oder edge, node [shape=box]
 
  graph {
   node [shape=box];
@@ -38,10 +38,20 @@
   a -- c [label="a zu c"];
  }
 
+Subgraphen
+
+ graph {
+  node [shape=box]
+  a [label="Dies ist a"];
+
+  a -- {b  c};
+  b -- c;
+ }
+
 * Rank erklären, b und c rank=same
 * rankdir
 
-* Vererbung von node Attributen
+Vererbung von node Attributen
 
  graph html {
   html;
@@ -58,8 +68,8 @@
 
 * Records
 * html [label=<<table><tr><td>KEY</td><td>VALUE</td></tr><tr><td>Hallo</td><td>Welt</td></tr></table>>];
-* Subgraphs
-* Gerichtete Graphen
+
+Gerichtete Graphen
 
  digraph fsm {
   node [shape=doublecircle];
@@ -86,8 +96,7 @@
     shape="record"
     label="Fahrrad|+ velocity : int\l|+ accelerate() : void\l"
    ];
-
-  Auto -> Fahrzeug [arrowhead="empty"]
+   Auto -> Fahrzeug [arrowhead="empty"]
   Fahrrad -> Fahrzeug [arrowhead="empty"]
  }
 

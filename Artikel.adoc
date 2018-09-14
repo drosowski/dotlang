@@ -363,9 +363,11 @@ Mittels
 erzeugen wir aus der Beschreibung unseres Graphen in dot.txt bspw. eine Bilddatei im PNG Format.
 
 === viz.js
-Bei dieser JavaScript Bibliothek handelt es sich um ein lauffähiges Graphviz, welches mittels Emscripten in Webassembly cross kompiliert wurde.
+Aber wir sind mit DOT nicht auf die Kommandozeile beschränkt.
+Viz.js <<4>> bringt uns eine komplette Graphviz Umgebung in den Browser.
+Bei dieser JavaScript Bibliothek handelt es sich tatsächlich um ein lauffähiges Graphviz, welches mittels Emscripten in Webassembly cross kompiliert wurde.
 Was auf den ersten Blick ziemlich wild aussieht, ist überraschend einfach in der Benutzung.
-Viz.js <<4>> ist in zwei verschiedenen Dateien aufgeteilt.
+Viz.js ist in zwei verschiedenen Dateien aufgeteilt.
 Zum einen finden wir die eigentliche API in der `viz.js` Datei.
 Außerdem gibt es noch die beiden Dateien `full.render.js` und `lite.render.js`.
 Die _full_ Rendering Datei beinhaltet neben der Möglichkeit der HTML Labels, noch einige der weniger gebräuchlichen Rendering Engines, auf die oben kurz eingegangen wurde.
@@ -418,9 +420,12 @@ viz.renderSVGElement('digraph { a -> b }')
 
 TIP: Da es sich bei dem Ausgabeformat um reines SVG handelt, können auch weitere Bibliotheken eingebunden werden, um bspw. ein Zoom einzubauen (siehe <<5>>).
 
+Für eine komplette Demoanwendung auf Basis von Spring Boot und viz.js, empfiehlt sich ein Blick auf webviz <<6>>.
+
 
 === D3
-Bei d3-graphviz <<6>> handelt es sich um eine Erweiterung von D3, die mit Hilfe von viz.js ebenfalls in der Lage ist DOT Graphen zu rendern.
+Bei d3-graphviz <<7>> handelt es sich um eine Erweiterung der populären JavaScript Bibliothek D3, die für die Visualisierung von Daten für das Web entwickelt wurde.
+Die Erweiterung ist mit Hilfe von viz.js ebenfalls in der Lage, Graphen im DOT Format zu rendern.
 Neben dem reinen Rendering, kann d3-graphviz allerdings auch Übergänge im Graph als Animationen darstellen.
 Das Prinzip ist recht einfach.
 Es werden zwei Graphen gerendert und D3 ist, anhand der resultierenden SVG Grafik, in der Lage zu ermitteln, welche Knoten und Kanten hinzugekommen oder entfernt wurden.
@@ -484,4 +489,6 @@ In diesem Fall sollten man nicht versuchen DOT und Graphviz auf seinen Anwendung
 [#5]
 [5] https://github.com/ariutta/svg-pan-zoom
 [#6]
-[6] https://github.com/magjac/d3-graphviz
+[6] https://github.com/drosowski/webviz
+[#7]
+[7] https://github.com/magjac/d3-graphviz
